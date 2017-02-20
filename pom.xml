@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>uk.ac.cam.alpha2017.airqualityradar.backend</groupId>
     <artifactId>AQR-Backend</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <version>1.0.0</version>
 
     <parent>
@@ -38,6 +38,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <start-class>uk.ac.cam.alpha2017.airqualityradar.backend.Application</start-class>
     </properties>
 
 
