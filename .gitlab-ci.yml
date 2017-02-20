@@ -3,13 +3,60 @@ image: maven:3-jdk-8
 stages:
   - build
   - test
+  - package
+  - deploy
 
 maven-build:
   stage: build
+  tags:
+    - azure
   script:
-    - mvn compile
+    - mvn --batch-mode compile
 
 maven-test:
   stage: test
+  tags:
+    - azure
   script:
-    - mvn test
+    - mvn --batch-mode test
+
+maven-package:
+  stage: package
+  tags:
+    - azure
+  script:
+    - mvn --batch-mode package -Dmaven.test.skip
+  artifacts:
+    paths:
+      - target/*.war
+  only:
+    - master
+
+azure-deploy:
+  image: debian:stretch
+  stage: deploy
+  tags:
+    - azure
+  script:
+    - apt-get update; apt-get install -y git
+    - git config --global user.email "aqr-backend-deploy@runner"
+    - git config --global user.name "AQR Backend Deployment Runner"
+    - mkdir ~/.ssh
+    - echo "$DEPLOY_REPO_KEY" > ~/.ssh/id_rsa
+    - echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - chmod 600 ~/.ssh/id_rsa ~/.ssh/known_hosts
+    - ssh-keygen -lf ~/.ssh/id_rsa
+    - mv target/*.war deploy/AQR-Backend.war
+    - git clone git@gitlab.com:air-quality-radar/AQR-Backend-Deployment.git
+    - rm -r AQR-Backend-Deployment/*
+    - cp -R deploy/* AQR-Backend-Deployment/
+    - cd AQR-Backend-Deployment
+    - git add .
+    - (git diff --cached --exit-code && echo "No changes") || (git commit -m "Automatic deployment" && git push origin master)
+  dependencies:
+    - maven-package
+  environment:
+    name: production
+    url: http://aqrradarapi.azurewebsites.net
+  only:
+    - master
