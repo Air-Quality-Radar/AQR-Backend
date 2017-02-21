@@ -7,6 +7,5 @@ public class RadarAPIEndpoints {
 
     // Make non-constructable
     private RadarAPIEndpoints() {
-
     }
 }
