@@ -1,12 +1,8 @@
 package uk.ac.cam.alpha2017.airqualityradar.backend.radarapi;
 
-public class RadarAPIEndpoints {
+public interface RadarAPIEndpoints {
     // Stores the string values of the endpoints of the AQR API.
 
-    public static final String HelloWorldEndpoint = "/hello-world";
-    public static final String AirQualityEndpoint = "/air-quality";
-
-    // Make non-constructable
-    private RadarAPIEndpoints() {
-    }
+    String HelloWorldEndpoint = "/hello-world";
+    String AirQualityEndpoint = "/air-quality/{day}";
 }
