@@ -8,6 +8,8 @@ import uk.ac.cam.alpha2017.airqualityradar.backend.models.DataPoint;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.Location;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.WeatherDataPoint;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.NOxMeasurement;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.PM10Measurement;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.PM25Measurement;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -43,11 +45,22 @@ public class HistoricalDataProvider {
         return resultList;
     }
 
+
+    /**
+     * Creates a datapoint from an entity, calendar and location
+     *
+     * @param calendar The date/times we are creating data point for
+     * @param location The location we are creating data point for
+     * @param entity The entity (Azure table row) we are creating data point for
+     * @return The data points from the historical data per calendar per location
+     */
     private DataPoint createDataPoint(Calendar calendar, Location location, DataRowEntity entity) {
-        //TODO: Create AirDataPOint and WeatherDataPoint in order to create DataPoint. Then return that.
-        AirDataPoint airDataPoint = new AirDataPoint(new NOxMeasurement(entity.getNOx()), );
+        NOxMeasurement NOx = new NOxMeasurement(Double.parseDouble(entity.getNOx()));
+        PM10Measurement PM10 = new PM10Measurement(Double.parseDouble(entity.getPM10()));
+        PM25Measurement PM25 = new PM25Measurement(Double.parseDouble(entity.getPM25()));
+        AirDataPoint airDataPoint = new AirDataPoint(NOx, PM10, PM25);
         WeatherDataPoint weatherDataPoint = new WeatherDataPoint();
-        new DataPoint(calendar, location, airDataPoint, weatherDataPoint);
+        return new DataPoint(calendar, location, airDataPoint, weatherDataPoint);
     }
 
 
