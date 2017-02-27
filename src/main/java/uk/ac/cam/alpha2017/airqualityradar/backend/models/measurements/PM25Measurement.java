@@ -1,14 +1,17 @@
 package uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements;
 
-public class NOxMeasurement implements NumberMeasurement {
+/**
+ * Created by jirka on 27.2.17.
+ */
+public class PM25Measurement implements NumberMeasurement {
     private double value;
     private String units;
 
-    public NOxMeasurement(double value) {
+    public PM25Measurement(double value) {
         this(value, "µg/m³");
     }
 
-    public NOxMeasurement(double value, String units) {
+    public PM25Measurement(double value, String units) {
         this.value = value;
         this.units = units;
     }

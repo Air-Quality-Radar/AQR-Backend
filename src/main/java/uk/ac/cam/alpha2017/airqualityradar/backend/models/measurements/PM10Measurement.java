@@ -1,6 +1,18 @@
 package uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements;
 
 public class PM10Measurement implements NumberMeasurement {
+    private double value;
+    private String units;
+
+    public PM10Measurement(double value) {
+        this(value, "µg/m³");
+    }
+
+    public PM10Measurement(double value, String units) {
+        this.value = value;
+        this.units = units;
+    }
+
     /**
      * Gives the units used for the measurement
      *
@@ -8,7 +20,7 @@ public class PM10Measurement implements NumberMeasurement {
      */
     @Override
     public String getUnits() {
-        return null;
+        return units;
     }
 
     /**
@@ -18,6 +30,6 @@ public class PM10Measurement implements NumberMeasurement {
      */
     @Override
     public double getValue() {
-        return 0;
+        return value;
     }
 }
