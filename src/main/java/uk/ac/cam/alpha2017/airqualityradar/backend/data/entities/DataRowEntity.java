@@ -32,7 +32,39 @@ public class DataRowEntity extends TableServiceEntity {
     }
 
     public DataRowEntity() {
+    }
 
+
+    public void setYear(String year) {
+        Year = year;
+    }
+
+    public void setDay(String day) {
+        Day = day;
+    }
+
+    public void setMinutes(String minutes) {
+        Minutes = minutes;
+    }
+
+    public void setLatitude(String latitude) {
+        Latitude = latitude;
+    }
+
+    public void setLongitude(String longitude) {
+        Longitude = longitude;
+    }
+
+    public void setNOx(String NOx) {
+        this.NOx = NOx;
+    }
+
+    public void setPM10(String PM10) {
+        this.PM10 = PM10;
+    }
+
+    public void setPM25(String PM25) {
+        this.PM25 = PM25;
     }
 
 
@@ -67,5 +99,4 @@ public class DataRowEntity extends TableServiceEntity {
     public String getPM25() {
         return PM25;
     }
-
 }
