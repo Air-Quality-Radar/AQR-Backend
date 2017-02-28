@@ -10,17 +10,17 @@ import com.microsoft.azure.storage.table.TableServiceEntity;
 public class DataRowEntity extends TableServiceEntity {
 
 
-    private String Year;
-    private String Days;
-    private String Minutes;
-    private String Latitude;
-    private String Longitude;
+    private Long Year;
+    private Long Days;
+    private Long Minutes;
+    private Long Latitude;
+    private Long Longitude;
     private String NOx;
     private String PM10;
     private String PM25;
 
-    public DataRowEntity(String Year, String Day, String Minutes, String Latitude, String Longitude, String NOx, String PM10, String PM25) {
-        this.partitionKey = Year;
+    public DataRowEntity(Long Year, Long Day, Long Minutes, Long Latitude, Long Longitude, String NOx, String PM10, String PM25) {
+        this.partitionKey = Year.toString();
         this.rowKey = String.format("%s,%s,%s,%s,%s", Year, Day, Minutes, Latitude, Longitude);
         this.Year = Year;
         this.Days = Day;
@@ -36,23 +36,23 @@ public class DataRowEntity extends TableServiceEntity {
     }
 
     @StoreAs(name="Year")
-    public void setYear(String Year) {
+    public void setYear(Long Year) {
         System.out.println("Year gets set"); this.Year = Year;
     }
 
-    public void setDays(String days) {
+    public void setDays(Long days) {
         Days = days;
     }
 
-    public void setMinutes(String minutes) {
+    public void setMinutes(Long minutes) {
         Minutes = minutes;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Long latitude) {
         Latitude = latitude;
     }
 
-    public void setLongitude(String Longitude) {
+    public void setLongitude(Long Longitude) {
         this.Longitude = Longitude;
     }
 
@@ -69,23 +69,23 @@ public class DataRowEntity extends TableServiceEntity {
     }
 
 
-    public String getYear() {
+    public Long getYear() {
         return Year;
     }
 
-    public String getDays() {
+    public Long getDays() {
         return Days;
     }
 
-    public String getMinutes() {
+    public Long getMinutes() {
         return Minutes;
     }
 
-    public String getLatitude() {
+    public Long getLatitude() {
         return Latitude;
     }
 
-    public String getLongitude() {
+    public Long getLongitude() {
         return Longitude;
     }
 
