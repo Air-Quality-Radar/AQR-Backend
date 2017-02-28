@@ -64,8 +64,8 @@ public class HistoricalDataProvider {
      * @return The data points from the historical data per calendar per location
      */
     private DataPoint createDataPoint(DataRowEntity entity) {
-        Calendar calendar = calendarParser.getCalendarFromDateStrings(entity.getYear(),entity.getDays(),entity.getMinutes());
-        Location location = new Location(entity.getLatitude(),entity.getLongitude());
+        Calendar calendar = calendarParser.getCalendarFromDateStrings(entity.getYear(), entity.getDaysSinceStartOfYear(), entity.getMinutesPastMidnight());
+        Location location = new Location(entity.getLatitude(), entity.getLongitude());
         NOxMeasurement NOx = entity.getNOx().equals("") ? null : new NOxMeasurement(Double.parseDouble(entity.getNOx()));
         PM10Measurement PM10 = entity.getPM10().equals("") ? null : new PM10Measurement(Double.parseDouble(entity.getPM10()));
         PM25Measurement PM25 = entity.getPM25().equals("") ? null : new PM25Measurement(Double.parseDouble(entity.getPM25()));
