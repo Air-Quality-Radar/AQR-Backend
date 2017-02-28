@@ -6,55 +6,59 @@ import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.CloudTableClient;
 import com.microsoft.azure.storage.table.TableQuery;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.DataRowEntity;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.DataRowEntityColumns;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.Calendar;
+import java.util.Iterator;
 
 import static uk.ac.cam.alpha2017.airqualityradar.backend.data.StorageConnectionInfo.storageConnectionString;
 
-/**
- * Created by jirka on 25.2.17.
- */
 public class AzureTableConnector {
 
-    private CloudTable getCloudTable(String tableName) throws URISyntaxException, InvalidKeyException, StorageException {
+    private CloudTable getCloudTable(String tableName) throws URISyntaxException, InvalidKeyException, StorageException, TableDoesNotExistException {
         // Retrieve storage account from connection-string.
         CloudStorageAccount storageAccount =
                 CloudStorageAccount.parse(storageConnectionString);
 
-        // Create the table client.
         CloudTableClient tableClient = storageAccount.createCloudTableClient();
 
-        // Create a cloud table object for the table.
         CloudTable cloudTable = tableClient.getTableReference(tableName);
+
+        if (!(cloudTable.exists())) {
+            throw new TableDoesNotExistException(tableName);
+        }
 
         return cloudTable;
     }
 
-    public DataRowEntity getEntityFromTableByRowKey(String tableName, String rowKey) throws StorageException, URISyntaxException, InvalidKeyException {
-        // Define constant for filters.
-        final String ROW_KEY = "RowKey";
-
-        //get cloud table
+    public DataRowEntity getEntityFromTableByRowKey(String tableName, String rowKey) throws StorageException, URISyntaxException, InvalidKeyException, TableDoesNotExistException {
         CloudTable cloudTable = getCloudTable(tableName);
 
-        if (!(cloudTable.exists()))
-            throw new IllegalArgumentException(String.format("Table %s doesn't exist", tableName));
-
-        //Create filter
-        String partitionFilter = TableQuery.generateFilterCondition(ROW_KEY, TableQuery.QueryComparisons.EQUAL, rowKey);
+        String filterCondition = TableQuery.generateFilterCondition(DataRowEntityColumns.ROW_KEY, TableQuery.QueryComparisons.EQUAL, rowKey);
 
 
-        // Specify query
-        TableQuery<DataRowEntity> partitionQuery =
+        TableQuery<DataRowEntity> query =
                 TableQuery.from(DataRowEntity.class)
-                        .where(partitionFilter);
+                          .where(filterCondition);
 
-        //Execute query
-        Iterable<DataRowEntity> entityIterable = cloudTable.execute(partitionQuery); //executes fine
+        Iterable<DataRowEntity> entityIterable = cloudTable.execute(query);
 
         return entityIterable.iterator().next();
     }
 
-//    public Iterable<DataRowEntity> getEntitiesBetweenDates(String tableName, )
+    public Iterator<DataRowEntity> getEntitiesBetweenCalendars(String tableName, Calendar fromDate, Calendar toDate) throws StorageException, URISyntaxException, InvalidKeyException, TableDoesNotExistException {
+        CloudTable cloudTable = getCloudTable(tableName);
+
+        String filterCondition = null;
+
+        TableQuery<DataRowEntity> query =
+                TableQuery.from(DataRowEntity.class)
+                        .where(filterCondition);
+
+        Iterable<DataRowEntity> entityIterable = cloudTable.execute(query);
+
+        return entityIterable.iterator();
+    }
 }
