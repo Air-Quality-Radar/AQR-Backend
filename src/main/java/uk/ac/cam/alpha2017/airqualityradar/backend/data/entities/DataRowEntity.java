@@ -9,22 +9,21 @@ import com.microsoft.azure.storage.table.TableServiceEntity;
  */
 public class DataRowEntity extends TableServiceEntity {
 
-
-    private Long Year;
-    private Long Days;
-    private Long Minutes;
+    private Long year;
+    private Long daysSinceStartOfYear;
+    private Long minutesPastMidnight;
     private Long Latitude;
     private Long Longitude;
     private String NOx;
     private String PM10;
     private String PM25;
 
-    public DataRowEntity(Long Year, Long Day, Long Minutes, Long Latitude, Long Longitude, String NOx, String PM10, String PM25) {
+    public DataRowEntity(Long Year, Long Day, Long minutesPastMidnight, Long Latitude, Long Longitude, String NOx, String PM10, String PM25) {
         this.partitionKey = Year.toString();
-        this.rowKey = String.format("%s,%s,%s,%s,%s", Year, Day, Minutes, Latitude, Longitude);
-        this.Year = Year;
-        this.Days = Day;
-        this.Minutes = Minutes;
+        this.rowKey = String.format("%s,%s,%s,%s,%s", Year, Day, minutesPastMidnight, Latitude, Longitude);
+        this.year = Year;
+        this.daysSinceStartOfYear = Day;
+        this.minutesPastMidnight = minutesPastMidnight;
         this.Latitude = Latitude;
         this.Longitude = Longitude;
         this.NOx = NOx;
@@ -35,17 +34,19 @@ public class DataRowEntity extends TableServiceEntity {
     public DataRowEntity() {
     }
 
-    @StoreAs(name="Year")
-    public void setYear(Long Year) {
-        System.out.println("Year gets set"); this.Year = Year;
+    @StoreAs(name=DataRowEntityColumns.YEAR)
+    public void setYear(Long year) {
+        this.year = year;
     }
 
-    public void setDays(Long days) {
-        Days = days;
+    @StoreAs(name=DataRowEntityColumns.DAYS)
+    public void setDaysSinceStartOfYear(Long daysSinceStartOfYear) {
+        this.daysSinceStartOfYear = daysSinceStartOfYear;
     }
 
-    public void setMinutes(Long minutes) {
-        Minutes = minutes;
+    @StoreAs(name=DataRowEntityColumns.MINUTES)
+    public void setMinutesPastMidnight(Long minutesPastMidnight) {
+        this.minutesPastMidnight = minutesPastMidnight;
     }
 
     public void setLatitude(Long latitude) {
@@ -57,7 +58,7 @@ public class DataRowEntity extends TableServiceEntity {
     }
 
     public void setNOx(String NOx) {
-        System.out.println("Nox gets set"); this.NOx = NOx;
+        this.NOx = NOx;
     }
 
     public void setPM10(String PM10) {
@@ -68,17 +69,19 @@ public class DataRowEntity extends TableServiceEntity {
         this.PM25 = PM25;
     }
 
-
+    @StoreAs(name=DataRowEntityColumns.YEAR)
     public Long getYear() {
-        return Year;
+        return year;
     }
 
-    public Long getDays() {
-        return Days;
+    @StoreAs(name=DataRowEntityColumns.DAYS)
+    public Long getDaysSinceStartOfYear() {
+        return daysSinceStartOfYear;
     }
 
-    public Long getMinutes() {
-        return Minutes;
+    @StoreAs(name=DataRowEntityColumns.MINUTES)
+    public Long getMinutesPastMidnight() {
+        return minutesPastMidnight;
     }
 
     public Long getLatitude() {
