@@ -41,7 +41,7 @@ public class HistoricalDataProvider {
         List<DataPoint> resultList = new LinkedList<>();
         if (calendars.size() != locations.size())
             throw new IllegalArgumentException(String.format("Number of dates (%d) doesn't match number of locations (%d)", calendars.size(), locations.size()));
-        for (int i=0; i<calendars.size(); i++) {
+        for (int i = 0; i < calendars.size(); i++) {
             Calendar currentCalendar = calendars.get(i);
             Location currentLocation = locations.get(i);
             String rowKey = generator.generateRowKey(currentCalendar, currentLocation);

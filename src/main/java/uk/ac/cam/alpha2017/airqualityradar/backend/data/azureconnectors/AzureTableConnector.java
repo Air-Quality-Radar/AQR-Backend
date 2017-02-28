@@ -55,4 +55,6 @@ public class AzureTableConnector {
 
         return entityIterable.iterator().next();
     }
+
+//    public Iterable<DataRowEntity> getEntitiesBetweenDates(String tableName, )
 }

@@ -1,5 +1,6 @@
 package uk.ac.cam.alpha2017.airqualityradar.backend.data.entities;
 
+import com.microsoft.azure.storage.table.StoreAs;
 import com.microsoft.azure.storage.table.TableServiceEntity;
 
 /**
@@ -10,7 +11,7 @@ public class DataRowEntity extends TableServiceEntity {
 
 
     private String Year;
-    private String Day;
+    private String Days;
     private String Minutes;
     private String Latitude;
     private String Longitude;
@@ -22,7 +23,7 @@ public class DataRowEntity extends TableServiceEntity {
         this.partitionKey = Year;
         this.rowKey = String.format("%s,%s,%s,%s,%s", Year, Day, Minutes, Latitude, Longitude);
         this.Year = Year;
-        this.Day = Day;
+        this.Days = Day;
         this.Minutes = Minutes;
         this.Latitude = Latitude;
         this.Longitude = Longitude;
@@ -34,13 +35,13 @@ public class DataRowEntity extends TableServiceEntity {
     public DataRowEntity() {
     }
 
-
-    public void setYear(String year) {
-        Year = year;
+    @StoreAs(name="Year")
+    public void setYear(String Year) {
+        System.out.println("Year gets set"); this.Year = Year;
     }
 
-    public void setDay(String day) {
-        Day = day;
+    public void setDays(String days) {
+        Days = days;
     }
 
     public void setMinutes(String minutes) {
@@ -51,12 +52,12 @@ public class DataRowEntity extends TableServiceEntity {
         Latitude = latitude;
     }
 
-    public void setLongitude(String longitude) {
-        Longitude = longitude;
+    public void setLongitude(String Longitude) {
+        this.Longitude = Longitude;
     }
 
     public void setNOx(String NOx) {
-        this.NOx = NOx;
+        System.out.println("Nox gets set"); this.NOx = NOx;
     }
 
     public void setPM10(String PM10) {
@@ -72,8 +73,8 @@ public class DataRowEntity extends TableServiceEntity {
         return Year;
     }
 
-    public String getDay() {
-        return Day;
+    public String getDays() {
+        return Days;
     }
 
     public String getMinutes() {
