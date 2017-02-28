@@ -1,6 +1,5 @@
 package uk.ac.cam.alpha2017.airqualityradar.backend.services;
 
-import uk.ac.cam.alpha2017.airqualityradar.backend.data.HistoricalDataProvider;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.AirDataPoint;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.DataPoint;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.Location;
@@ -90,9 +89,7 @@ public class MockRadarDataService {
 
         if (now.after(calendar)){ //historical - not done
             locationList = listLocations("src/main/java/uk/ac/cam/alpha2017/airqualityradar/backend/services/historicalLocationFile.csv");
-            HistoricalDataProvider historicalProvider = new HistoricalDataProvider();
-            dataPoints = historicalProvider.getDataPoints(null,null);
-
+            dataPoints = null;
 
         } else { //prediction - mock version
             //get calendar
