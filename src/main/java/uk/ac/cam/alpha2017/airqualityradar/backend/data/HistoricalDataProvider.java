@@ -6,7 +6,6 @@ import uk.ac.cam.alpha2017.airqualityradar.backend.data.azureconnectors.TableDoe
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.DataRowEntity;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.generators.DataRowEntityRowKeyGenerator;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.generators.parsers.CalendarParser;
-import uk.ac.cam.alpha2017.airqualityradar.backend.data.generators.parsers.LocationParser;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.AirDataPoint;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.DataPoint;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.Location;
@@ -22,11 +21,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class HistoricalDataProvider {
-    // Define constants for filters.
-    final String TABLE_NAME = "rawpollution";
-    DataRowEntityRowKeyGenerator generator;
-    AzureTableConnector connector;
-    CalendarParser calendarParser;
+    private final String TABLE_NAME = "rawpollution";
+    private DataRowEntityRowKeyGenerator generator;
+    private AzureTableConnector connector;
+    private CalendarParser calendarParser;
 
     public HistoricalDataProvider() {
         generator = new DataRowEntityRowKeyGenerator();
@@ -60,7 +58,7 @@ public class HistoricalDataProvider {
     /**
      * Creates a datapoint from an entity, calendar and location
      *
-     * @param entity   The entity (Azure table row) we are creating data point for
+     * @param entity The entity (Azure table row) we are creating data point for
      * @return The data points from the historical data per calendar per location
      */
     private DataPoint createDataPoint(DataRowEntity entity) {
