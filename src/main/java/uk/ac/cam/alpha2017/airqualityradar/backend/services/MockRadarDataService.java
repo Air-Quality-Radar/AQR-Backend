@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by henry on 27/02/2017.
  *
- * for each calendar time (every 3 hours for the next 5 days), a data point for each location (4 for predictions) are
+ * for each calendar time (every 3 hours for the next 5 days), a data point for each location (6 for predictions) are
  * returned. Each has a current air quality data point and predicted weather data point attached
  *
  *
