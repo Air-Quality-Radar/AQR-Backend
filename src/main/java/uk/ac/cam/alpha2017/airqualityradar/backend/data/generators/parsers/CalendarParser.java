@@ -9,4 +9,12 @@ public class CalendarParser {
         int minutes = calendar.get(Calendar.MINUTE);
         return String.format("%s,%s,%s", year, day, minutes);
     }
+
+    public Calendar getCalendarFromDateStrings(Long year, Long dayOfYear, Long minutes){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year.intValue());
+        calendar.set(Calendar.DAY_OF_YEAR, dayOfYear.intValue());
+        calendar.set(Calendar.MINUTE, minutes.intValue());
+        return calendar;
+    }
 }
