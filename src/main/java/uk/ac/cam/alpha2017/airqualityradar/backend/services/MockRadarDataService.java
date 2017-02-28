@@ -16,62 +16,46 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Created by henry on 27/02/2017.
- *
- * for each calendar time (every 3 hours for the next 5 days), a data point for each location (6 for predictions) are
- * returned. Each has a current air quality data point and predicted weather data point attached
- *
+ * For each calendar time (every 3 hours for the next 5 days), a data point for each location (6 for predictions) are
+ * returned. Each has a current air quality data point and predicted weather data point attached.
  *
  */
-public class MockRadarDataService {
+public class MockRadarDataService implements DataService {
 
     private int daysAvailable(Calendar req) {
-        Calendar max = Calendar.getInstance();
-        max.add(Calendar.DATE,4);
-
-        int numMillisecondsInDay = 1000 * 60 * 60 * 24;
-
-        Double daysApart = Math.floor((max.getTime().getTime() - req.getTime().getTime()) / numMillisecondsInDay);
-
-        return daysApart.intValue();
+        return 5;
     }
 
-    private List<Calendar> listPredictionCalendars(int measureNo, Calendar calendar){
+    private List<Calendar> predictionCalendarsAround(Calendar calendar) {
         List<Calendar> calendarList = new LinkedList<>();
 
         int days = daysAvailable(calendar);
-        System.out.println("days " + days);
 
         if (days < 0) {
             return calendarList;
         }
 
-        for (int i = measureNo; i < 8; i++) {
-            calendarList.add(Calendar.getInstance());
-            Calendar newCal = calendarList.get(calendarList.size()-1);
-            newCal.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
-            newCal.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
-            newCal.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
-            newCal.set(Calendar.HOUR_OF_DAY, i*3);
-        }
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
-        for (int i = 0; i < days; i++) {
-            for(int j = 1; j < 8; j++) {
-                calendarList.add(Calendar.getInstance());
-                Calendar newCal = calendarList.get(calendarList.size()-1);
-                newCal.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
-                newCal.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
-                newCal.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH)+i+1);
-                newCal.set(Calendar.HOUR_OF_DAY, j*3);
-
-            }
+        for (int additionalHours = 0; additionalHours <= days * 24; additionalHours += 3) {
+            Calendar newCalendar = (Calendar) calendar.clone();
+            newCalendar.add(Calendar.HOUR_OF_DAY, additionalHours);
+            calendarList.add(newCalendar);
         }
 
         return calendarList;
     }
 
-    private List<Location> listLocations(String filename) throws FileNotFoundException {
-        Scanner csvScanner = new Scanner(new File(filename));
+    private List<Location> listLocations(String filename) {
+        Scanner csvScanner;
+        try {
+            csvScanner = new Scanner(new File(filename));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Could not find required monitoring locations file");
+        }
         List<Location> locations = new LinkedList<>();
         csvScanner.nextLine();
         while (csvScanner.hasNext()) {
@@ -81,22 +65,16 @@ public class MockRadarDataService {
         return locations;
     }
 
-    public List<DataPoint> getDataPoints(Calendar calendar) throws FileNotFoundException {
+    public List<DataPoint> getDataPoints(Calendar calendar) {
         List<DataPoint> dataPoints = new ArrayList<>();
-        List<Calendar> calendarList;
-        List<Location> locationList;
 
         // Get calendars
-        int requestMin = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
-        int measureNo = (requestMin / 180) + 1;
-        calendarList = listPredictionCalendars(measureNo, calendar);
+        List<Calendar> calendarList = predictionCalendarsAround(calendar);
 
         // Get locations
-        locationList = listLocations("src/main/java/uk/ac/cam/alpha2017/airqualityradar/backend/services/airPointLocationFile.csv");
+        List<Location> locationList = listLocations("src/main/java/uk/ac/cam/alpha2017/airqualityradar/backend/services/airPointLocationFile.csv");
 
-        for (int i = 0; i < calendarList.size(); i++) {
-            Calendar sampleCalendar = calendarList.get(i);
-
+        for (Calendar sampleCalendar : calendarList) {
             // Make weather data point — weather is global across Cambridge for our purposes
             TemperatureMeasurement temp = new TemperatureMeasurement(ThreadLocalRandom.current().nextDouble(0,20), "ºC");
             HumidityMeasurement hum = new HumidityMeasurement(ThreadLocalRandom.current().nextDouble(60,90), "%");
@@ -107,9 +85,7 @@ public class MockRadarDataService {
 
             WeatherDataPoint weatherDataPoint = new WeatherDataPoint(temp, hum, windD, windS, press, rain);
 
-            for (int j = 0; j < locationList.size(); j++) {
-                Location sampleLocation = locationList.get(j);
-
+            for (Location sampleLocation : locationList) {
                 // Make air data point
                 NOxMeasurement nox = new NOxMeasurement(ThreadLocalRandom.current().nextDouble(0, 25));
                 PM10Measurement pm10 = new PM10Measurement(ThreadLocalRandom.current().nextDouble(5, 15));
