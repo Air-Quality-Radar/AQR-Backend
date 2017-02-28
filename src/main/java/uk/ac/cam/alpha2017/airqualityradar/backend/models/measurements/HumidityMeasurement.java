@@ -5,8 +5,13 @@ public class HumidityMeasurement implements NumberMeasurement {
     private String units;
     private double value;
 
-    public HumidityMeasurement(double value){
+    public HumidityMeasurement(double value) {
+        this(value, "%");
+    }
+
+    public HumidityMeasurement(double value, String units) {
         this.value = value;
+        this.units = units;
     }
 
     /**

@@ -5,9 +5,15 @@ public class WindSpeedMeasurement implements NumberMeasurement {
     private String units;
     private double value;
 
-    public WindSpeedMeasurement(double value){
-        this.value = value;
+    public WindSpeedMeasurement(double value) {
+        this(value, "m/s");
     }
+
+    public WindSpeedMeasurement(double value, String units) {
+        this.value = value;
+        this.units = units;
+    }
+
     /**
      * Gives the units used for the measurement
      *

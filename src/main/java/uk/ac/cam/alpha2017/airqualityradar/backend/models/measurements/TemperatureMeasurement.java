@@ -5,8 +5,13 @@ public class TemperatureMeasurement implements NumberMeasurement {
     private String units;
     private double value;
 
-    public TemperatureMeasurement(double value){
+    public TemperatureMeasurement(double value) {
+        this(value, "ºC");
+    }
+
+    public TemperatureMeasurement(double value, String units) {
         this.value = value;
+        this.units = units;
     }
 
     /**
