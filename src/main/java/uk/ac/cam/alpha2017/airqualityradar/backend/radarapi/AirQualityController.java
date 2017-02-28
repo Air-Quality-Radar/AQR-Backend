@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.DataPoint;
 import uk.ac.cam.alpha2017.airqualityradar.backend.services.RadarDataService;
 
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,8 +28,9 @@ public class AirQualityController {
      * @return A list of data points for that day at the various locations and times
      * @throws ParseException When an invalid date is passed to the API, a ParseException will be thrown
      */
+
     @RequestMapping(RadarAPIEndpoints.AirQualityEndpoint)
-    public List<DataPoint> airQuality(@PathVariable("day") String day) throws ParseException {
+    public List<DataPoint> airQuality(@PathVariable("day") String day) throws ParseException, FileNotFoundException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateFormat.parse(day);
 

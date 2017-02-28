@@ -25,7 +25,7 @@ public class RecordMakerTest {
                 new AbstractMap.SimpleEntry<>(540, 540),
                 new AbstractMap.SimpleEntry<>(600, 540),
                 new AbstractMap.SimpleEntry<>(700, 720),
-                new AbstractMap.SimpleEntry<>(100, 360),
+                new AbstractMap.SimpleEntry<>(100, 180),
                 new AbstractMap.SimpleEntry<>(1400, 1260),
                 new AbstractMap.SimpleEntry<>(990, 1080)
         );

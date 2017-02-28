@@ -1,6 +1,13 @@
 package uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements;
 
 public class WindSpeedMeasurement implements NumberMeasurement {
+
+    private String units;
+    private double value;
+
+    public WindSpeedMeasurement(double value){
+        this.value = value;
+    }
     /**
      * Gives the units used for the measurement
      *
@@ -18,6 +25,6 @@ public class WindSpeedMeasurement implements NumberMeasurement {
      */
     @Override
     public double getValue() {
-        return 0;
+        return value;
     }
 }
