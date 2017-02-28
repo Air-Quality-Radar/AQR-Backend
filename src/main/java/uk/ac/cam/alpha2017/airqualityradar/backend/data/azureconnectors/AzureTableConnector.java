@@ -16,7 +16,8 @@ import static uk.ac.cam.alpha2017.airqualityradar.backend.data.StorageConnection
  * Created by jirka on 25.2.17.
  */
 public class AzureTableConnector {
-    private static CloudTable getCloudTable(String tableName) throws URISyntaxException, InvalidKeyException, StorageException {
+
+    private CloudTable getCloudTable(String tableName) throws URISyntaxException, InvalidKeyException, StorageException {
         // Retrieve storage account from connection-string.
         CloudStorageAccount storageAccount =
                 CloudStorageAccount.parse(storageConnectionString);
@@ -30,7 +31,7 @@ public class AzureTableConnector {
         return cloudTable;
     }
 
-    public static DataRowEntity getEntityFromTableByRowKey(String tableName, String rowKey) throws StorageException, URISyntaxException, InvalidKeyException {
+    public DataRowEntity getEntityFromTableByRowKey(String tableName, String rowKey) throws StorageException, URISyntaxException, InvalidKeyException {
         // Define constant for filters.
         final String ROW_KEY = "RowKey";
 
