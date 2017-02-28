@@ -26,7 +26,7 @@ public class RadarDataService {
 
             //get list of locations
             List<Location> locationList = new LinkedList<>();
-            Scanner csvScanner = new Scanner(new File("src/main/java/uk/ac/cam/alpha2017/airqualityradar/backend/services/historicalLocationFile.csv"));
+            Scanner csvScanner = new Scanner(new File("src/main/java/uk/ac/cam/alpha2017/airqualityradar/backend/services/airPointLocationFile.csv"));
             csvScanner.nextLine();
             while(csvScanner.hasNext()){
                 String[] data = csvScanner.nextLine().split(",");

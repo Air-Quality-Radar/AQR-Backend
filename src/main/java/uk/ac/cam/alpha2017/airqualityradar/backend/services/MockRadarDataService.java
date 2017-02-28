@@ -88,7 +88,7 @@ public class MockRadarDataService {
         List<Location> locationList;
 
         if (now.after(calendar)){ //historical - not done
-            locationList = listLocations("src/main/java/uk/ac/cam/alpha2017/airqualityradar/backend/services/historicalLocationFile.csv");
+            locationList = listLocations("src/main/java/uk/ac/cam/alpha2017/airqualityradar/backend/services/airPointLocationFile.csv");
             dataPoints = null;
 
         } else { //prediction - mock version
@@ -98,7 +98,7 @@ public class MockRadarDataService {
             calendarList = listPredictionCalendars(measureNo, calendar);
 
             //get location
-            locationList = listLocations("src/main/java/uk/ac/cam/alpha2017/airqualityradar/backend/services/predictionLocationFile.csv");
+            locationList = listLocations("src/main/java/uk/ac/cam/alpha2017/airqualityradar/backend/services/airPointLocationFile.csv");
 
             //get weather
             for(int i=0; i< calendarList.size(); i++){
