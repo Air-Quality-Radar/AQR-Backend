@@ -3,7 +3,6 @@ package uk.ac.cam.alpha2017.airqualityradar.backend.services;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.DataPoint;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class RadarDataService {
