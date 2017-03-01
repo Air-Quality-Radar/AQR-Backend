@@ -34,24 +34,6 @@ public class AzureTableConnector {
         return cloudTable;
     }
 
-    public DataRowEntity getEntityFromTableByRowKey(String tableName, String rowKey) throws StorageException, URISyntaxException, InvalidKeyException, TableDoesNotExistException {
-        CloudTable cloudTable = getCloudTable(tableName);
-
-        String filterCondition = TableQuery.generateFilterCondition(
-                DataRowEntityColumns.ROW_KEY,
-                TableQuery.QueryComparisons.EQUAL,
-                rowKey);
-
-
-        TableQuery<DataRowEntity> query =
-                TableQuery.from(DataRowEntity.class)
-                          .where(filterCondition);
-
-        Iterable<DataRowEntity> entityIterable = cloudTable.execute(query);
-
-        return entityIterable.iterator().next();
-    }
-
     public Iterator<DataRowEntity> getEntitiesBetweenCalendars(String tableName, Calendar fromDate, Calendar toDate) throws StorageException, URISyntaxException, InvalidKeyException, TableDoesNotExistException {
         CloudTable cloudTable = getCloudTable(tableName);
 
