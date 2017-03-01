@@ -5,6 +5,7 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.CloudTableClient;
 import com.microsoft.azure.storage.table.TableQuery;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageConnectionInfo;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.dataconverters.CalendarConverter;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.DataRowEntity;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.DataRowEntityColumns;
@@ -14,14 +15,17 @@ import java.security.InvalidKeyException;
 import java.util.Calendar;
 import java.util.Iterator;
 
-import static uk.ac.cam.alpha2017.airqualityradar.backend.data.StorageConnectionInfo.storageConnectionString;
-
 public class AzureTableConnector {
+    private StorageConnectionInfo connectionInfo;
+
+    public AzureTableConnector(StorageConnectionInfo connectionInfo) {
+        this.connectionInfo = connectionInfo;
+    }
 
     private CloudTable getCloudTable(String tableName) throws URISyntaxException, InvalidKeyException, StorageException, TableDoesNotExistException {
         // Retrieve storage account from connection-string.
         CloudStorageAccount storageAccount =
-                CloudStorageAccount.parse(storageConnectionString);
+                CloudStorageAccount.parse(connectionInfo.getStorageConnectionString());
 
         CloudTableClient tableClient = storageAccount.createCloudTableClient();
 

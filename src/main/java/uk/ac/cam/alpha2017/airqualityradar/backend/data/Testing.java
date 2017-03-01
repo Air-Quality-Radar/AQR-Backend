@@ -5,9 +5,11 @@ package uk.ac.cam.alpha2017.airqualityradar.backend.data;
 import com.microsoft.azure.storage.StorageException;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.azureconnectors.AzureTableConnector;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.azureconnectors.TableDoesNotExistException;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageCredentials;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.dataconverters.CalendarConverter;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.DataPoint;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.text.DateFormat;
@@ -25,8 +27,9 @@ public class Testing {
         return cal;
     }
 
-    public static void main(String[] args) throws ParseException, StorageException, InvalidKeyException, URISyntaxException, TableDoesNotExistException {
-        HistoricalDataProvider hdp = new HistoricalDataProvider(new AzureTableConnector());
+    public static void main(String[] args) throws ParseException, StorageException, InvalidKeyException, URISyntaxException, TableDoesNotExistException, IOException {
+        StorageCredentials credentials = new StorageCredentials();
+        HistoricalDataProvider hdp = new HistoricalDataProvider(new AzureTableConnector(credentials.getConnectionInfo()));
 
         Calendar fromCalendar = toCalendar("2017-01-09 16:00:00");
         Calendar toCalendar = toCalendar("2017-03-10 16:00:00");

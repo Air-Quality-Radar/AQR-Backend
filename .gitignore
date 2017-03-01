@@ -3,4 +3,4 @@
 .idea/libraries/*
 target/*
 out/*
-src/main/java/uk/ac/cam/alpha2017/airqualityradar/backend/data/StorageConnectionInfo.java
+deploy/storage_connection.json
