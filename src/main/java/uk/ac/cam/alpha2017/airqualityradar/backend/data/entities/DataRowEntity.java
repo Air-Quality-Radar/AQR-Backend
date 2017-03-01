@@ -10,16 +10,16 @@ import com.microsoft.azure.storage.table.TableServiceEntity;
 public class DataRowEntity extends TableServiceEntity {
 
     private String searchTimestamp;
-    private Long year;
-    private Long daysSinceStartOfYear;
-    private Long minutesPastMidnight;
+    private String year;
+    private String daysSinceStartOfYear;
+    private String minutesPastMidnight;
     private Long latitude;
     private Long longitude;
     private String NOx;
     private String PM10;
     private String PM25;
 
-    public DataRowEntity(String searchTimestamp, Long year, Long daysSinceStartOfYear, Long minutesPastMidnight, Long latitude, Long longitude, String NOx, String PM10, String PM25) {
+    public DataRowEntity(String searchTimestamp, String year, String daysSinceStartOfYear, String minutesPastMidnight, Long latitude, Long longitude, String NOx, String PM10, String PM25) {
         this.searchTimestamp = searchTimestamp;
         this.year = year;
         this.daysSinceStartOfYear = daysSinceStartOfYear;
@@ -40,17 +40,17 @@ public class DataRowEntity extends TableServiceEntity {
     }
 
     @StoreAs(name=DataRowEntityColumns.YEAR)
-    public void setYear(Long year) {
+    public void setYear(String year) {
         this.year = year;
     }
 
     @StoreAs(name=DataRowEntityColumns.DAYS)
-    public void setDaysSinceStartOfYear(Long daysSinceStartOfYear) {
+    public void setDaysSinceStartOfYear(String daysSinceStartOfYear) {
         this.daysSinceStartOfYear = daysSinceStartOfYear;
     }
 
     @StoreAs(name=DataRowEntityColumns.MINUTES)
-    public void setMinutesPastMidnight(Long minutesPastMidnight) {
+    public void setMinutesPastMidnight(String minutesPastMidnight) {
         this.minutesPastMidnight = minutesPastMidnight;
     }
 
@@ -80,17 +80,17 @@ public class DataRowEntity extends TableServiceEntity {
     }
 
     @StoreAs(name=DataRowEntityColumns.YEAR)
-    public Long getYear() {
+    public String getYear() {
         return year;
     }
 
     @StoreAs(name=DataRowEntityColumns.DAYS)
-    public Long getDaysSinceStartOfYear() {
+    public String getDaysSinceStartOfYear() {
         return daysSinceStartOfYear;
     }
 
     @StoreAs(name=DataRowEntityColumns.MINUTES)
-    public Long getMinutesPastMidnight() {
+    public String getMinutesPastMidnight() {
         return minutesPastMidnight;
     }
 

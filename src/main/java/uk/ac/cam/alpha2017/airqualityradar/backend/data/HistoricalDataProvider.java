@@ -16,6 +16,7 @@ import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.PM25Measu
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,13 +63,23 @@ public class HistoricalDataProvider {
      * @return The data points from the historical data per calendar per location
      */
     private DataPoint convertToDataPoint(DataRowEntity entity) {
-        Calendar calendar = calendarParser.getCalendarFromDateStrings(entity.getYear(), entity.getDaysSinceStartOfYear(), entity.getMinutesPastMidnight());
+        Calendar calendar;
+
+        try {
+            calendar = calendarParser.getCalendarFromSearchTimestamp(entity.getSearchTimestamp());
+        } catch (ParseException e) {
+            throw new RuntimeException("Failed to parse search timestamp in entity");
+        }
+
         Location location = new Location(entity.getLatitude(), entity.getLongitude());
+
         NOxMeasurement NOx = entity.getNOx().equals("") ? null : new NOxMeasurement(Double.parseDouble(entity.getNOx()));
         PM10Measurement PM10 = entity.getPM10().equals("") ? null : new PM10Measurement(Double.parseDouble(entity.getPM10()));
         PM25Measurement PM25 = entity.getPM25().equals("") ? null : new PM25Measurement(Double.parseDouble(entity.getPM25()));
+
         AirDataPoint airDataPoint = new AirDataPoint(NOx, PM10, PM25);
         WeatherDataPoint weatherDataPoint = new WeatherDataPoint();
+
         return new DataPoint(calendar, location, airDataPoint, weatherDataPoint);
     }
 
