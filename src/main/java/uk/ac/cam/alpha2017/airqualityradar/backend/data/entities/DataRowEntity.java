@@ -2,6 +2,17 @@ package uk.ac.cam.alpha2017.airqualityradar.backend.data.entities;
 
 import com.microsoft.azure.storage.table.StoreAs;
 import com.microsoft.azure.storage.table.TableServiceEntity;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.dataconverters.CalendarConverter;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.AirDataPoint;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.DataPoint;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.Location;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.WeatherDataPoint;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.NOxMeasurement;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.PM10Measurement;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.PM25Measurement;
+
+import java.text.ParseException;
+import java.util.Calendar;
 
 /**
  * Creates a DataRowEntity which should be instantiated by reflection - that's why data fields don't follow
@@ -19,19 +30,30 @@ public class DataRowEntity extends TableServiceEntity {
     private String PM10;
     private String PM25;
 
-    public DataRowEntity(String searchTimestamp, String year, String daysSinceStartOfYear, String minutesPastMidnight, Long latitude, Long longitude, String NOx, String PM10, String PM25) {
-        this.searchTimestamp = searchTimestamp;
-        this.year = year;
-        this.daysSinceStartOfYear = daysSinceStartOfYear;
-        this.minutesPastMidnight = minutesPastMidnight;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.NOx = NOx;
-        this.PM10 = PM10;
-        this.PM25 = PM25;
-    }
+    /**
+     * Creates a DataPoint from an entity, calendar and location
+     *
+     * @return The data points from the historical data per calendar per location
+     */
+    public DataPoint convertToDataPoint() {
+        Calendar calendar;
 
-    public DataRowEntity() {
+        try {
+            calendar = CalendarConverter.getCalendarFromSearchTimestamp(getSearchTimestamp());
+        } catch (ParseException e) {
+            throw new RuntimeException("Failed to parse search timestamp in entity");
+        }
+
+        Location location = new Location(getLatitude(), getLongitude());
+
+        NOxMeasurement NOx = getNOx().equals("") ? null : new NOxMeasurement(Double.parseDouble(getNOx()));
+        PM10Measurement PM10 = getPM10().equals("") ? null : new PM10Measurement(Double.parseDouble(getPM10()));
+        PM25Measurement PM25 = getPM25().equals("") ? null : new PM25Measurement(Double.parseDouble(getPM25()));
+
+        AirDataPoint airDataPoint = new AirDataPoint(NOx, PM10, PM25);
+        WeatherDataPoint weatherDataPoint = new WeatherDataPoint();
+
+        return new DataPoint(calendar, location, airDataPoint, weatherDataPoint);
     }
 
     @StoreAs(name=DataRowEntityColumns.SEARCH_TIMESTAMP)
