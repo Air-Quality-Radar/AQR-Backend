@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class CalendarConverter {
-    private static final String SearchTimestampFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    private static final String SearchTimestampFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     public static String getSearchTimestampForCalendar(Calendar calendar) {
         DateFormat formatter = new SimpleDateFormat(SearchTimestampFormat);

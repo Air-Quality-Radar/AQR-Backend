@@ -72,7 +72,7 @@ public class AzureTableConnector {
 
         TableQuery<DataRowEntity> query =
                 TableQuery.from(DataRowEntity.class)
-                        .where(filterCondition);
+                          .where(filterCondition);
 
         Iterable<DataRowEntity> entityIterable = cloudTable.execute(query);
 
