@@ -15,10 +15,10 @@ import java.util.List;
 
 public class HistoricalDataProvider {
     private static final String TABLE_NAME = "pollution";
-    private AzureTableConnector connector;
+    private final AzureTableConnector connector;
 
-    public HistoricalDataProvider() {
-        connector = new AzureTableConnector();
+    public HistoricalDataProvider(AzureTableConnector connector) {
+        this.connector = connector;
     }
 
     /**
