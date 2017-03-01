@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class HistoricalDataProvider {
-    private final String TABLE_NAME = "rawpollution";
+    private final String TABLE_NAME = "pollution";
     private DataRowEntityRowKeyGenerator generator;
     private AzureTableConnector connector;
     private CalendarParser calendarParser;
@@ -49,7 +49,7 @@ public class HistoricalDataProvider {
             Location currentLocation = locations.get(i);
             String rowKey = generator.generateRowKey(currentCalendar, currentLocation);
             DataRowEntity currentEntity = connector.getEntityFromTableByRowKey(TABLE_NAME, rowKey);
-            resultList.add(createDataPoint(currentEntity));
+            resultList.add(convertToDataPoint(currentEntity));
         }
         return resultList;
     }
@@ -61,7 +61,7 @@ public class HistoricalDataProvider {
      * @param entity The entity (Azure table row) we are creating data point for
      * @return The data points from the historical data per calendar per location
      */
-    private DataPoint createDataPoint(DataRowEntity entity) {
+    private DataPoint convertToDataPoint(DataRowEntity entity) {
         Calendar calendar = calendarParser.getCalendarFromDateStrings(entity.getYear(), entity.getDaysSinceStartOfYear(), entity.getMinutesPastMidnight());
         Location location = new Location(entity.getLatitude(), entity.getLongitude());
         NOxMeasurement NOx = entity.getNOx().equals("") ? null : new NOxMeasurement(Double.parseDouble(entity.getNOx()));

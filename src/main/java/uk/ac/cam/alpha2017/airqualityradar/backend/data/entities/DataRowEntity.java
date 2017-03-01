@@ -9,29 +9,34 @@ import com.microsoft.azure.storage.table.TableServiceEntity;
  */
 public class DataRowEntity extends TableServiceEntity {
 
+    private String searchTimestamp;
     private Long year;
     private Long daysSinceStartOfYear;
     private Long minutesPastMidnight;
-    private Long Latitude;
-    private Long Longitude;
+    private Long latitude;
+    private Long longitude;
     private String NOx;
     private String PM10;
     private String PM25;
 
-    public DataRowEntity(Long Year, Long Day, Long minutesPastMidnight, Long Latitude, Long Longitude, String NOx, String PM10, String PM25) {
-        this.partitionKey = Year.toString();
-        this.rowKey = String.format("%s,%s,%s,%s,%s", Year, Day, minutesPastMidnight, Latitude, Longitude);
-        this.year = Year;
-        this.daysSinceStartOfYear = Day;
+    public DataRowEntity(String searchTimestamp, Long year, Long daysSinceStartOfYear, Long minutesPastMidnight, Long latitude, Long longitude, String NOx, String PM10, String PM25) {
+        this.searchTimestamp = searchTimestamp;
+        this.year = year;
+        this.daysSinceStartOfYear = daysSinceStartOfYear;
         this.minutesPastMidnight = minutesPastMidnight;
-        this.Latitude = Latitude;
-        this.Longitude = Longitude;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.NOx = NOx;
         this.PM10 = PM10;
         this.PM25 = PM25;
     }
 
     public DataRowEntity() {
+    }
+
+    @StoreAs(name=DataRowEntityColumns.SEARCH_TIMESTAMP)
+    public void setSearchTimestamp(String searchTimestamp) {
+        this.searchTimestamp = searchTimestamp;
     }
 
     @StoreAs(name=DataRowEntityColumns.YEAR)
@@ -50,11 +55,11 @@ public class DataRowEntity extends TableServiceEntity {
     }
 
     public void setLatitude(Long latitude) {
-        Latitude = latitude;
+        this.latitude = latitude;
     }
 
     public void setLongitude(Long Longitude) {
-        this.Longitude = Longitude;
+        this.longitude = Longitude;
     }
 
     public void setNOx(String NOx) {
@@ -67,6 +72,11 @@ public class DataRowEntity extends TableServiceEntity {
 
     public void setPM25(String PM25) {
         this.PM25 = PM25;
+    }
+
+    @StoreAs(name=DataRowEntityColumns.SEARCH_TIMESTAMP)
+    public String getSearchTimestamp() {
+        return searchTimestamp;
     }
 
     @StoreAs(name=DataRowEntityColumns.YEAR)
@@ -85,11 +95,11 @@ public class DataRowEntity extends TableServiceEntity {
     }
 
     public Long getLatitude() {
-        return Latitude;
+        return latitude;
     }
 
     public Long getLongitude() {
-        return Longitude;
+        return longitude;
     }
 
     public String getNOx() {

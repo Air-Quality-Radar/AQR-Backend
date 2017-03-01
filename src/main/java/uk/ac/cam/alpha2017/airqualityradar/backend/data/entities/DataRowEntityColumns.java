@@ -20,4 +20,9 @@ public interface DataRowEntityColumns {
      * e.g. 00:34 is 34
      */
     String MINUTES = "Minutes";
+
+    /**
+     * The timestamp for the data point
+     */
+    String SEARCH_TIMESTAMP = "SearchTimestamp";
 }

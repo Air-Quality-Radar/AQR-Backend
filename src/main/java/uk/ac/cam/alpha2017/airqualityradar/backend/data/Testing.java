@@ -41,6 +41,7 @@ public class Testing {
     }
 
     public static void printEntity(DataRowEntity entity) {
+        System.out.println("The search timestamp is " + entity.getSearchTimestamp());
         System.out.println("The year is " + entity.getYear());
         System.out.println("The minute is " + entity.getMinutesPastMidnight());
         System.out.println("The day is " + entity.getDaysSinceStartOfYear());
@@ -59,12 +60,15 @@ public class Testing {
         Calendar cal1 = toCalendar("2016-01-09 16:00:00");
         Calendar cal2 = toCalendar("2016-01-10 16:00:00");
 
-        Iterator<DataRowEntity> result = connector.getEntitiesBetweenCalendars("rawpollution", cal1, cal2);
+        Iterator<DataRowEntity> result = connector.getEntitiesBetweenCalendars("pollution", cal1, cal2);
 
         result.forEachRemaining(entity -> printEntity(entity));
     }
 
     public static void main(String[] args) throws ParseException, StorageException, InvalidKeyException, URISyntaxException, TableDoesNotExistException {
+        listTables();
+        getEntities();
+
         HistoricalDataProvider hdp = new HistoricalDataProvider();
 
         Calendar cal1 = toCalendar("2016-01-09 16:00:00");
@@ -87,8 +91,6 @@ public class Testing {
             AirDataPoint adp = x.getAir();
             System.out.printf("%s,%s,%s\n", printNumMes(adp.getNox()),printNumMes(adp.getPm10()),printNumMes(adp.getPm25()));
         }
-        listTables();
-        getEntities();
     }
 
     public static String printNumMes (NumberMeasurement numMes) {
@@ -125,7 +127,7 @@ public class Testing {
         CloudTableClient tableClient = storageAccount.createCloudTableClient();
 
         // Create a cloud table object for the table.
-        CloudTable cloudTable = tableClient.getTableReference("rawpollution");
+        CloudTable cloudTable = tableClient.getTableReference("pollution");
 
         //table exists
         System.out.println(cloudTable.exists());
@@ -133,7 +135,7 @@ public class Testing {
 
         // UP UNTIL NOW JUST AZURE TUTORIAL CODE
         // Generate a filter for Timestamp>0 => should always return something
-        String partitionFilter = TableQuery.generateFilterCondition(DataRowEntityColumns.ROW_KEY, QueryComparisons.EQUAL, "2017,9,960,52214239,136262");
+        String partitionFilter = TableQuery.generateFilterCondition(DataRowEntityColumns.ROW_KEY, QueryComparisons.GREATER_THAN_OR_EQUAL, "2017,9,960");
 
 
         // Specify a partition query, using "Timestamp>0" as the partition key filter.
