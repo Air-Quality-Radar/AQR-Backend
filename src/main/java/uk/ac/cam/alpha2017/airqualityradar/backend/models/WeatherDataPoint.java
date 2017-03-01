@@ -14,4 +14,39 @@ public class WeatherDataPoint {
     private WindSpeedMeasurement windSpeed;
     private PressureMeasurement pressure;
     private RainfallMeasurement rainfall;
+
+    public WeatherDataPoint(TemperatureMeasurement temperature, HumidityMeasurement humidity,
+                            WindDirectionMeasurement windDirection, WindSpeedMeasurement windSpeed,
+                            PressureMeasurement pressure, RainfallMeasurement rainfall) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.windDirection = windDirection;
+        this.windSpeed = windSpeed;
+        this.pressure = pressure;
+        this.rainfall = rainfall;
+    }
+
+    public TemperatureMeasurement getTemperature() {
+        return temperature;
+    }
+
+    public HumidityMeasurement getHumidity() {
+        return humidity;
+    }
+
+    public WindDirectionMeasurement getWindDirection() {
+        return windDirection;
+    }
+
+    public WindSpeedMeasurement getWindSpeed() {
+        return windSpeed;
+    }
+
+    public PressureMeasurement getPressure() {
+        return pressure;
+    }
+
+    public RainfallMeasurement getRainfall() {
+        return rainfall;
+    }
 }

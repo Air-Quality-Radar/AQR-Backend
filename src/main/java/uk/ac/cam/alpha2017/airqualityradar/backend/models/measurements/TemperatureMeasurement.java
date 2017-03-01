@@ -1,6 +1,19 @@
 package uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements;
 
 public class TemperatureMeasurement implements NumberMeasurement {
+
+    private String units;
+    private double value;
+
+    public TemperatureMeasurement(double value) {
+        this(value, "ºC");
+    }
+
+    public TemperatureMeasurement(double value, String units) {
+        this.value = value;
+        this.units = units;
+    }
+
     /**
      * Gives the units used for the measurement
      *
@@ -8,7 +21,7 @@ public class TemperatureMeasurement implements NumberMeasurement {
      */
     @Override
     public String getUnits() {
-        return null;
+        return units;
     }
 
     /**
@@ -18,6 +31,6 @@ public class TemperatureMeasurement implements NumberMeasurement {
      */
     @Override
     public double getValue() {
-        return 0;
+        return value;
     }
 }

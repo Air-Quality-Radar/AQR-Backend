@@ -1,6 +1,20 @@
 package uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements;
 
 public class PressureMeasurement implements NumberMeasurement {
+
+    private String units;
+    private double value;
+
+    public PressureMeasurement(double value) {
+        this(value, "mb");
+    }
+
+    public PressureMeasurement(double value, String units) {
+        this.value = value;
+        this.units = units;
+    }
+
+    /*
     /**
      * Gives the units used for the measurement
      *
@@ -8,7 +22,7 @@ public class PressureMeasurement implements NumberMeasurement {
      */
     @Override
     public String getUnits() {
-        return null;
+        return units;
     }
 
     /**
@@ -18,6 +32,6 @@ public class PressureMeasurement implements NumberMeasurement {
      */
     @Override
     public double getValue() {
-        return 0;
+        return value;
     }
 }
