@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 
 public class DataPointConverter {
+    private final static int locationScalingFactor = 1000000; //1 million
 
     /**
      * Creates a DataPoint from an air and weather entity
@@ -28,7 +29,7 @@ public class DataPointConverter {
             throw new RuntimeException("Failed to parse search timestamp in entity");
         }
 
-        Location location = new Location(airDataEntity.getLatitude(), airDataEntity.getLongitude());
+        Location location = new Location(airDataEntity.getLatitude().doubleValue() / locationScalingFactor, airDataEntity.getLongitude().doubleValue() / locationScalingFactor);
 
         NOxMeasurement NOx = airDataEntity.getNOx().equals("") ? null : new NOxMeasurement(Double.parseDouble(airDataEntity.getNOx()));
         PM10Measurement PM10 = airDataEntity.getPM10().equals("") ? null : new PM10Measurement(Double.parseDouble(airDataEntity.getPM10()));
