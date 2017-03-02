@@ -5,6 +5,7 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.CloudTableClient;
 import com.microsoft.azure.storage.table.TableQuery;
+import com.microsoft.azure.storage.table.TableServiceEntity;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageConnectionInfo;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.dataconverters.CalendarConverter;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.AirDataEntity;
@@ -38,7 +39,7 @@ public class AzureTableConnector {
         return cloudTable;
     }
 
-    public Iterator<AirDataEntity> getEntitiesBetweenCalendars(String tableName, Calendar fromDate, Calendar toDate) throws StorageException, URISyntaxException, InvalidKeyException, TableDoesNotExistException {
+    public <T extends TableServiceEntity> Iterator<T> getEntitiesBetweenCalendars(String tableName, Calendar fromDate, Calendar toDate, Class<T> classToMapByReflection) throws StorageException, URISyntaxException, InvalidKeyException, TableDoesNotExistException {
         CloudTable cloudTable = getCloudTable(tableName);
 
         String fromDateCondition = TableQuery.generateFilterCondition(
@@ -56,11 +57,11 @@ public class AzureTableConnector {
                 TableQuery.Operators.AND,
                 toDateCondition);
 
-        TableQuery<AirDataEntity> query =
-                TableQuery.from(AirDataEntity.class)
+        TableQuery<T> query =
+                TableQuery.from(classToMapByReflection)
                           .where(filterCondition);
 
-        Iterable<AirDataEntity> entityIterable = cloudTable.execute(query);
+        Iterable<T> entityIterable = cloudTable.execute(query);
 
         return entityIterable.iterator();
     }
