@@ -48,22 +48,27 @@ public class AirDataEntity extends TableServiceEntity {
         this.minutesPastMidnight = minutesPastMidnight;
     }
 
+    @StoreAs(name= AirDataEntityColumns.LATITUDE)
     public void setLatitude(Long latitude) {
         this.latitude = latitude;
     }
 
+    @StoreAs(name= AirDataEntityColumns.LONGITUDE)
     public void setLongitude(Long Longitude) {
         this.longitude = Longitude;
     }
 
+    @StoreAs(name= AirDataEntityColumns.NOX)
     public void setNOx(String NOx) {
         this.NOx = NOx;
     }
 
+    @StoreAs(name= AirDataEntityColumns.PM10)
     public void setPM10(String PM10) {
         this.PM10 = PM10;
     }
 
+    @StoreAs(name= AirDataEntityColumns.PM25)
     public void setPM25(String PM25) {
         this.PM25 = PM25;
     }
@@ -88,22 +93,27 @@ public class AirDataEntity extends TableServiceEntity {
         return minutesPastMidnight;
     }
 
+    @StoreAs(name= AirDataEntityColumns.LATITUDE)
     public Long getLatitude() {
         return latitude;
     }
 
+    @StoreAs(name= AirDataEntityColumns.LONGITUDE)
     public Long getLongitude() {
         return longitude;
     }
 
+    @StoreAs(name= AirDataEntityColumns.NOX)
     public String getNOx() {
         return NOx;
     }
 
+    @StoreAs(name= AirDataEntityColumns.PM10)
     public String getPM10() {
         return PM10;
     }
 
+    @StoreAs(name= AirDataEntityColumns.PM25)
     public String getPM25() {
         return PM25;
     }
