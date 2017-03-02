@@ -6,7 +6,7 @@ import com.microsoft.azure.storage.table.TableServiceEntity;
 /**
  * Creates a WeatherDataEntity which will be instantiated by reflection
  */
-public class WeatherDataEntity extends TableServiceEntity {
+public class WeatherDataEntity extends TableServiceEntity implements Comparable {
     private String searchTimestamp;
     private String year;
     private String daysSinceStartOfYear;
@@ -138,6 +138,14 @@ public class WeatherDataEntity extends TableServiceEntity {
     @StoreAs(name = WeatherDataEntityColumns.RAINFALL)
     public String getRainfallInPastHour() {
         return rainfallInPastHour;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (!(o instanceof WeatherDataEntity)) {
+            throw new ClassCastException("WeatherDataEntity expected");
+        }
+        return this.getSearchTimestamp().compareTo(((WeatherDataEntity) o).getSearchTimestamp());
     }
 
     @Override
