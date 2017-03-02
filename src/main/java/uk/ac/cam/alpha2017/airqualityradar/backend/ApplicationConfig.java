@@ -2,9 +2,16 @@ package uk.ac.cam.alpha2017.airqualityradar.backend;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.HistoricalDataProvider;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.azureconnectors.AzureTableConnector;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageConnectionInfo;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageCredentials;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.dataconverters.DataPointConverter;
 import uk.ac.cam.alpha2017.airqualityradar.backend.radarapi.AirQualityController;
 import uk.ac.cam.alpha2017.airqualityradar.backend.services.DataService;
-import uk.ac.cam.alpha2017.airqualityradar.backend.services.MockRadarDataService;
+import uk.ac.cam.alpha2017.airqualityradar.backend.services.RadarDataService;
+
+import java.io.IOException;
 
 @Configuration
 public class ApplicationConfig {
@@ -15,6 +22,33 @@ public class ApplicationConfig {
 
     @Bean
     public DataService dataService() {
-        return new MockRadarDataService();
+        return new RadarDataService(historicalDataProvider());
+    }
+
+    @Bean
+    public HistoricalDataProvider historicalDataProvider() {
+        return new HistoricalDataProvider(azureTableConnector(), dataPointConverter());
+    }
+
+    @Bean
+    public AzureTableConnector azureTableConnector() {
+        StorageConnectionInfo connectionInfo;
+        try {
+           connectionInfo = storageCredentials().getConnectionInfo();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to get storage connection info");
+        }
+
+        return new AzureTableConnector(connectionInfo);
+    }
+
+    @Bean
+    public StorageCredentials storageCredentials() {
+        return new StorageCredentials();
+    }
+
+    @Bean
+    DataPointConverter dataPointConverter() {
+        return new DataPointConverter();
     }
 }
