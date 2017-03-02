@@ -7,8 +7,8 @@ import com.microsoft.azure.storage.table.CloudTableClient;
 import com.microsoft.azure.storage.table.TableQuery;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageConnectionInfo;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.dataconverters.CalendarConverter;
-import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.DataRowEntity;
-import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.DataRowEntityColumns;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.AirDataEntity;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.AirDataEntityColumns;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -38,16 +38,16 @@ public class AzureTableConnector {
         return cloudTable;
     }
 
-    public Iterator<DataRowEntity> getEntitiesBetweenCalendars(String tableName, Calendar fromDate, Calendar toDate) throws StorageException, URISyntaxException, InvalidKeyException, TableDoesNotExistException {
+    public Iterator<AirDataEntity> getEntitiesBetweenCalendars(String tableName, Calendar fromDate, Calendar toDate) throws StorageException, URISyntaxException, InvalidKeyException, TableDoesNotExistException {
         CloudTable cloudTable = getCloudTable(tableName);
 
         String fromDateCondition = TableQuery.generateFilterCondition(
-                DataRowEntityColumns.SEARCH_TIMESTAMP,
+                AirDataEntityColumns.SEARCH_TIMESTAMP,
                 TableQuery.QueryComparisons.GREATER_THAN_OR_EQUAL,
                 CalendarConverter.getSearchTimestampForCalendar(fromDate));
 
         String toDateCondition = TableQuery.generateFilterCondition(
-                DataRowEntityColumns.SEARCH_TIMESTAMP,
+                AirDataEntityColumns.SEARCH_TIMESTAMP,
                 TableQuery.QueryComparisons.LESS_THAN_OR_EQUAL,
                 CalendarConverter.getSearchTimestampForCalendar(toDate));
 
@@ -56,11 +56,11 @@ public class AzureTableConnector {
                 TableQuery.Operators.AND,
                 toDateCondition);
 
-        TableQuery<DataRowEntity> query =
-                TableQuery.from(DataRowEntity.class)
+        TableQuery<AirDataEntity> query =
+                TableQuery.from(AirDataEntity.class)
                           .where(filterCondition);
 
-        Iterable<DataRowEntity> entityIterable = cloudTable.execute(query);
+        Iterable<AirDataEntity> entityIterable = cloudTable.execute(query);
 
         return entityIterable.iterator();
     }
