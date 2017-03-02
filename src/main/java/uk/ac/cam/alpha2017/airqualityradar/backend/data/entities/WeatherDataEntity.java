@@ -140,4 +140,16 @@ public class WeatherDataEntity extends TableServiceEntity {
         return rainfallInPastHour;
     }
 
+    @Override
+    public String toString() {
+        String returnString = "";
+        returnString += "Temperature " + temperature;
+        returnString += "Humidity " + humidity;
+        returnString += "Pressure " + pressure;
+        returnString += "Wind speed " + windSpeed;
+        returnString += "Wind direction " + windDirection;
+        returnString += "Rainfall " + rainfallInPastHour;
+        return returnString;
+    }
+
 }
