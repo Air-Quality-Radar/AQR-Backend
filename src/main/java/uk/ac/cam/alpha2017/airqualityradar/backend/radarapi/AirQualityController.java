@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.DataPoint;
-import uk.ac.cam.alpha2017.airqualityradar.backend.services.RadarDataService;
+import uk.ac.cam.alpha2017.airqualityradar.backend.services.DataService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,9 +14,9 @@ import java.util.List;
 
 @RestController
 public class AirQualityController {
-    private RadarDataService dataService;
+    private DataService dataService;
 
-    public AirQualityController(RadarDataService dataService) {
+    public AirQualityController(DataService dataService) {
         this.dataService = dataService;
     }
 
