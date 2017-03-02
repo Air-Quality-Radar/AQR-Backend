@@ -42,16 +42,23 @@ public class HistoricalDataProvider {
         connector.getEntitiesBetweenCalendars(HISTORICAL_AIR_DATA_TABLE_NAME, fromCalendar, toCalendar, AirDataEntity.class).forEachRemaining(airDataResultList::add);
         connector.getEntitiesBetweenCalendars(HISTORICAL_WEATHER_DATA_TABLE_NAME, fromCalendar, toCalendar, WeatherDataEntity.class).forEachRemaining(weatherDataResultList::add);
 
-        //Sort lists
-        Collections.sort(airDataResultList);
-        Collections.sort(weatherDataResultList);
-
         //Will error if no weatherDataResults retrieved but I think that's appropriate (otherwise mapDataPoints would error)
         if (weatherDataResultList.size() == 0) throw new IllegalStateException("Weather data is empty");
         return mapDataPoints(weatherDataResultList, airDataResultList);
     }
 
+    /**
+     * Maps historical air quality data with historical weather data (both retrieved from Azure)
+     *
+     * @param weatherDataResultList A list of historical weather data retrived from Azure. ArrayList required for fast sorting.
+     * @param airDataResultList A list of historical air quality data retrived from Azure. ArrayList required for fast sorting.
+     * @return The data points including both weather and air quality from the historical data per calendar per location
+     */
     private ArrayList<DataPoint> mapDataPoints(List<WeatherDataEntity> weatherDataResultList, List<AirDataEntity> airDataResultList) {
+        //Sort lists
+        Collections.sort(airDataResultList);
+        Collections.sort(weatherDataResultList);
+
         //Setup
         int weatherIndex = 0;
         WeatherDataEntity currentWeatherEntity = weatherDataResultList.get(weatherIndex);
@@ -72,19 +79,10 @@ public class HistoricalDataProvider {
                     else currentWeatherEntity = weatherDataResultList.get(weatherIndex);
                 }
             }
-
-            if (currentWeatherEntity == null)
-                System.out.printf("The airDataEntity is %s, the weatherDataEntity is null\n", airDataEntity.getSearchTimestamp());
-            else printTimeStamps(airDataEntity, currentWeatherEntity);
             dataPoints.add(dataPointConverter.convertAirAndWeatherToDataPoint(airDataEntity, currentWeatherEntity));
         }
         return dataPoints;
 
-    }
-
-    //For debugging
-    private void printTimeStamps(AirDataEntity airDataEntity, WeatherDataEntity weatherDataEntity) {
-        System.out.printf("The airDataEntity is %s, the weatherDataEntity is %s\n", airDataEntity.getSearchTimestamp(), weatherDataEntity.getSearchTimestamp());
     }
 }
 
