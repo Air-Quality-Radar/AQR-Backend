@@ -5,9 +5,8 @@ import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.WeatherDataEnti
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.AirDataPoint;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.DataPoint;
 import uk.ac.cam.alpha2017.airqualityradar.backend.models.Location;
-import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.NOxMeasurement;
-import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.PM10Measurement;
-import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.PM25Measurement;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.WeatherDataPoint;
+import uk.ac.cam.alpha2017.airqualityradar.backend.models.measurements.*;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -37,6 +36,19 @@ public class DataPointConverter {
 
         AirDataPoint airDataPoint = new AirDataPoint(NOx, PM10, PM25);
 
-        return new DataPoint(calendar, location, airDataPoint, null);
+        if (weatherDataEntity == null) return new DataPoint(calendar, location, airDataPoint, null);
+
+        else {
+            TemperatureMeasurement temperatureMeasurement = weatherDataEntity.getTemperature().equals("") ? null : new TemperatureMeasurement(Double.parseDouble(weatherDataEntity.getTemperature()));
+            HumidityMeasurement humidityMeasurement = weatherDataEntity.getHumidity().equals("") ? null : new HumidityMeasurement(Double.parseDouble(weatherDataEntity.getHumidity()));
+            WindDirectionMeasurement windDirectionMeasurement = weatherDataEntity.getWindDirection().equals("") ? null : new WindDirectionMeasurement(weatherDataEntity.getWindDirection());
+            WindSpeedMeasurement windSpeedMeasurement = weatherDataEntity.getWindSpeed().equals("") ? null : new WindSpeedMeasurement(Double.parseDouble(weatherDataEntity.getWindSpeed()));
+            PressureMeasurement pressureMeasurement = weatherDataEntity.getPressure().equals("") ? null : new PressureMeasurement(Double.parseDouble(weatherDataEntity.getPressure()));
+            RainfallMeasurement rainfallMeasurement = weatherDataEntity.getRainfallInPastHour().equals("") ? null : new RainfallMeasurement(Double.parseDouble(weatherDataEntity.getRainfallInPastHour()));
+
+            WeatherDataPoint weatherDataPoint = new WeatherDataPoint(temperatureMeasurement, humidityMeasurement, windDirectionMeasurement, windSpeedMeasurement, pressureMeasurement, rainfallMeasurement);
+
+            return new DataPoint(calendar, location, airDataPoint, weatherDataPoint);
+        }
     }
 }
