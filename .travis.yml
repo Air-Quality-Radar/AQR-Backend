@@ -4,6 +4,7 @@ jdk: oraclejdk8
 before_deploy:
   - mvn -B package
   - mv target/*.war deploy/AQR-Backend.war
+  - rm -rf target
 #  - git config --global user.email "aqr-backend-deploy@travis"
 #  - git config --global user.name "Travis AQR Backend Deployment"
 #  - git add deploy/AQR-Backend.war
@@ -14,6 +15,7 @@ deploy:
   username: aqrradarapi\\radarapi
   site: aqrradarapi
   skip_cleanup: true
+  verbose: true
   on:
     branch: travis-azure-deploy # For testing
 
