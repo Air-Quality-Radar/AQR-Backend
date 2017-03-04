@@ -33,11 +33,7 @@ public class ApplicationConfig {
     @Bean
     public AzureTableConnector azureTableConnector() {
         StorageConnectionInfo connectionInfo;
-        try {
-           connectionInfo = storageCredentials().getConnectionInfo();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to get storage connection info");
-        }
+        connectionInfo = storageCredentials().getConnectionInfo();
 
         return new AzureTableConnector(connectionInfo);
     }

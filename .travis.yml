@@ -3,7 +3,8 @@ jdk: oraclejdk8
 
 before_deploy:
   - mvn -B package
-  - mv target/*.war deploy/AQR-Backend.war
+  - mkdir deploy/webapps
+  - mv target/*.war deploy/webapps/ROOT.war
   - rm -rf target
 
 deploy:
