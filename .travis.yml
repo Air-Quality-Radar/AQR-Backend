@@ -1,5 +1,24 @@
 language: java
 jdk: oraclejdk8
+
+before_deploy:
+  - mvn -B package
+  - mv target/*.war deploy/AQR-Backend.war
+  - git config --global user.email "aqr-backend-deploy@travis"
+  - git config --global user.name "Travis AQR Backend Deployment"
+  - git add deploy/AQR-Backend.war
+  - git commit -m "Adding war file for deployment"
+
+deploy:
+  provider: azure_web_apps
+  username: aqrradarapi\\radarapi
+  site: aqrradarapi
+  all_branches: true
+
 notifications:
   slack:
     secure: pM5iRTeD61kyiS+/JbGNgtu2v1sBYMYfYNVmO36lgfo0OD/OGN4aCbLwJWNGS1/Mgr6MlYzEYCWlDluyP7FcjyLuNwAjro0Xze7ECjMNT03aqSXI5oliYEFQaVdx9ghDfVqDfCL/sG95npChJtXZXxmHI3+KvC6HEv4PqgeN+urCL3JCT+9FeMkW6LLzUGVgzpttJ+6dkKKYMuQ4McKmV/kZI3qe+jR2ZeiVcHaj0ZpYTs68PC//cCM9EwHGJyf7bmN1DyCsCdL0Yckw7bkjgZX20ezrgkJS5WEGdZ2kFpYyVizoRiotj7nhTnAbUqI9qH34wWID2COK69B7X+Q1FJA2C4iVdoIs41RVl6Cd79XZ1HDxZ56kHVyI+daV3Tss65GEyGHnJLBsM4VP5CWdp3Ido98maMawwEp/8SCv7PzfOFbAs36XXp7YVW+W1b145XwLx5KTG6j3wa5gI8ZIHpPIE/TyEVuYNmLdpxGdp+an9isoGgsSxULLrORVbfC6KDqfYzm9lptWhPL0f6TYophRL3g7SVd6ZQzqzP1AD3+AeUwmtJgn0LMi4aQf0BD6Fi8wbSwEl4FgeJHJNuIgXSCsbBvNxnj46MoGw1KV9RxmztYdM++k07mFqXgN6iV8oESrEWnQfZSwPQaW2Lk86xj/O7r4Aa/Ox+PltNYvWJ4=
+
+env:
+  global:
+    secure: GxXHI3f6Lw4SssvSX2bAxnVAdo54kzp5Pim/3Oxtw4+ofmw0nM0VOTd0DuEL5q/yvI755UU5mFPd+LhAYPAGBFh0OT4WQaJm9CH/0wC7RiYAUS19/s8CkW+8VOx/lhKW1qFnqulJ9s1mPl18n4CviMZL9E7o1ucA9Sa66464VfluQvDd6aH+PVUf+8TSeDv9JHMajT45AW7R3NsOS2gNHbWH+wLsNHUHFolk1axaj00NGuksSMdPJhXO1vhZpyDrvEm5Ybzixei+vnSakDCovG1vHtlApN7QQ6JgtpsuKikvmU9trdCzeq9Ll0vuU9vE/4OZG7LtOCP9EjjKIYWvXi831mZVrKFPu1OixVOwKeQmYGIQ6qm8GZRrmC/pFk4qjF+Rpvl0SDZ4JRDL6yf1GRLNh60tA2W7KQkLI4DA+kOrBO54KjcKttZJo+ZWu+xf0AbMfn6FIUZN8BjjopBEeHrOJsvxCBw8pED1w6p6xIi23NmAkuMKppPUqfTigxPY9GVVYg7HXAt2mizMnmCyS4TzqHXpz/VO2NpUv8NvC5oD1kiIXVsKPIJTgmFX5hiw//+SaAZTQXceo3g5z7onHj5so+MHGsM8gY/KWIxsYk31i0IiJ5Sjom9MZ1SQyNDp8gCZs3xTn9Keu6FNPIeFuEMcdV8Xt03GZsabnJk4hSk=
