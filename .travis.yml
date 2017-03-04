@@ -13,7 +13,8 @@ deploy:
   provider: azure_web_apps
   username: aqrradarapi\\radarapi
   site: aqrradarapi
-  all_branches: true
+  on:
+    branch: travis-azure-deploy # For testing
 
 notifications:
   slack:
