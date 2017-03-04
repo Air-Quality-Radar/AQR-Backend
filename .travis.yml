@@ -13,7 +13,7 @@ deploy:
   site: aqrradarapi
   skip_cleanup: true
   on:
-    branch: travis-azure-deploy
+    branch: master
 
 notifications:
   slack:
