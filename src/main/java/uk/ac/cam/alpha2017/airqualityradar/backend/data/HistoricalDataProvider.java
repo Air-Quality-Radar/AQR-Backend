@@ -10,10 +10,7 @@ import uk.ac.cam.alpha2017.airqualityradar.backend.models.DataPoint;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class HistoricalDataProvider {
     private static final String HISTORICAL_AIR_DATA_TABLE_NAME = "pollution";
@@ -57,34 +54,34 @@ public class HistoricalDataProvider {
      * @return The data points including both weather and air quality from the historical data per calendar per location
      */
     private ArrayList<DataPoint> mapDataPoints(List<WeatherDataEntity> weatherDataResultList, List<AirDataEntity> airDataResultList) {
-        // Sort lists
+        // Sort lists & convert to iterables
         Collections.sort(airDataResultList);
         Collections.sort(weatherDataResultList);
+        Iterator<AirDataEntity> airDataEntityIterator = airDataResultList.iterator();
+        Iterator<WeatherDataEntity> weatherDataEntityIterator = weatherDataResultList.iterator();
 
         // Setup
-        int weatherIndex = 0;
-        WeatherDataEntity currentWeatherEntity = weatherDataResultList.get(weatherIndex);
-        ArrayList<DataPoint> dataPoints = new ArrayList<>(weatherDataResultList.size());
+        WeatherDataEntity currentWeatherEntity = weatherDataEntityIterator.next();
+        AirDataEntity currentAirDataEntity;
+        ArrayList<DataPoint> dataPoints = new ArrayList<>(airDataResultList.size());
 
-        for (AirDataEntity airDataEntity : airDataResultList) {
-            // if weatherDataResultList has next
-            if ((weatherIndex + 1) < weatherDataResultList.size()) {
+        while (airDataEntityIterator.hasNext()) {
+            currentAirDataEntity = airDataEntityIterator.next();
+            if (weatherDataEntityIterator.hasNext()) {
                 // If weather entity is newer than air data entity, go through the list to find one that's not
-                while (airDataEntity.getSearchTimestamp().compareTo(currentWeatherEntity.getSearchTimestamp()) > 0) {
-                    weatherIndex++;
-                    // if no more weather results just connect all remaining air data points with null
-                    if (weatherIndex >= weatherDataResultList.size()) {
+                while (currentAirDataEntity.getSearchTimestamp().compareTo(currentWeatherEntity.getSearchTimestamp()) > 0) {
+                    // If no more weather results just connect all remaining air data points with null
+                    if (!(weatherDataEntityIterator.hasNext())) {
                         currentWeatherEntity = null;
                         break;
+                    } else {
+                        // else go on traversing the list until you find an up to date point
+                        currentWeatherEntity = weatherDataEntityIterator.next();
                     }
-                    // else go on traversing the list until you find an up to date point
-                    else currentWeatherEntity = weatherDataResultList.get(weatherIndex);
                 }
             }
-            dataPoints.add(dataPointConverter.convertAirAndWeatherToDataPoint(airDataEntity, currentWeatherEntity));
+            dataPoints.add(dataPointConverter.convertAirAndWeatherToDataPoint(currentAirDataEntity, currentWeatherEntity));
         }
         return dataPoints;
-
     }
 }
-
