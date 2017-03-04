@@ -36,7 +36,9 @@ public class DataPointConverter {
 
         AirDataPoint airDataPoint = new AirDataPoint(NOx, PM10, PM25);
 
-        if (weatherDataEntity == null) return new DataPoint(calendar, location, airDataPoint, null);
+        if (weatherDataEntity == null) {
+            return new DataPoint(calendar, location, airDataPoint, null);
+        }
 
         else {
             TemperatureMeasurement temperatureMeasurement = weatherDataEntity.getTemperature().equals("") ? null : new TemperatureMeasurement(Double.parseDouble(weatherDataEntity.getTemperature()));

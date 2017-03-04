@@ -38,12 +38,14 @@ public class HistoricalDataProvider {
         ArrayList<AirDataEntity> airDataResultList = new ArrayList<>();
         ArrayList<WeatherDataEntity> weatherDataResultList = new ArrayList<>();
 
-        //Convert iterators to list using Java8 syntactic sugar & lambdas <3
+        // Convert iterators to list using Java8 syntactic sugar & lambdas <3
         connector.getEntitiesBetweenCalendars(HISTORICAL_AIR_DATA_TABLE_NAME, fromCalendar, toCalendar, AirDataEntity.class).forEachRemaining(airDataResultList::add);
         connector.getEntitiesBetweenCalendars(HISTORICAL_WEATHER_DATA_TABLE_NAME, fromCalendar, toCalendar, WeatherDataEntity.class).forEachRemaining(weatherDataResultList::add);
 
-        //Will error if no weatherDataResults retrieved but I think that's appropriate (otherwise mapDataPoints would error)
-        if (weatherDataResultList.size() == 0) throw new IllegalStateException("Weather data is empty");
+        // Will error if no weatherDataResults retrieved but I think that's appropriate (otherwise mapDataPoints would error)
+        if (weatherDataResultList.size() == 0) {
+            throw new IllegalStateException("Weather data is empty");
+        }
         return mapDataPoints(weatherDataResultList, airDataResultList);
     }
 
@@ -51,31 +53,31 @@ public class HistoricalDataProvider {
      * Maps historical air quality data with historical weather data (both retrieved from Azure)
      *
      * @param weatherDataResultList A list of historical weather data retrived from Azure. ArrayList required for fast sorting.
-     * @param airDataResultList A list of historical air quality data retrived from Azure. ArrayList required for fast sorting.
+     * @param airDataResultList     A list of historical air quality data retrived from Azure. ArrayList required for fast sorting.
      * @return The data points including both weather and air quality from the historical data per calendar per location
      */
     private ArrayList<DataPoint> mapDataPoints(List<WeatherDataEntity> weatherDataResultList, List<AirDataEntity> airDataResultList) {
-        //Sort lists
+        // Sort lists
         Collections.sort(airDataResultList);
         Collections.sort(weatherDataResultList);
 
-        //Setup
+        // Setup
         int weatherIndex = 0;
         WeatherDataEntity currentWeatherEntity = weatherDataResultList.get(weatherIndex);
         ArrayList<DataPoint> dataPoints = new ArrayList<>(weatherDataResultList.size());
 
         for (AirDataEntity airDataEntity : airDataResultList) {
-            //if weatherDataResultList has next
+            // if weatherDataResultList has next
             if ((weatherIndex + 1) < weatherDataResultList.size()) {
-                //If weather entity is newer than air data entity, go through the list to find one that's not
+                // If weather entity is newer than air data entity, go through the list to find one that's not
                 while (airDataEntity.getSearchTimestamp().compareTo(currentWeatherEntity.getSearchTimestamp()) > 0) {
                     weatherIndex++;
-                    //if no more weather results just connect all remaining air data points with null
+                    // if no more weather results just connect all remaining air data points with null
                     if (weatherIndex >= weatherDataResultList.size()) {
                         currentWeatherEntity = null;
                         break;
                     }
-                    //else go on traversing the list until you find an up to date point
+                    // else go on traversing the list until you find an up to date point
                     else currentWeatherEntity = weatherDataResultList.get(weatherIndex);
                 }
             }

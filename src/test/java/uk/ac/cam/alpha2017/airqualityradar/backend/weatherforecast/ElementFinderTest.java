@@ -44,7 +44,7 @@ public class ElementFinderTest {
 
     @Test
     public void testFindElementValid() throws ParserConfigurationException, IOException, SAXException, RecordNotFoundException {
-        //test the .findElementForDate function for valid date inputs
+        // test the .findElementForDate function for valid date inputs
         Calendar testDate = Calendar.getInstance();
         testDate.set(2017, 1, 16);
 
@@ -56,7 +56,7 @@ public class ElementFinderTest {
 
     @Test
     public void testFindElementInvalid() throws IOException, SAXException, ParserConfigurationException {
-        //test the .findElementForDate function for invalid date inputs
+        // test the .findElementForDate function for invalid date inputs
         Calendar invalidDate = Calendar.getInstance();
         invalidDate.set(2017, 1, 21);
 
