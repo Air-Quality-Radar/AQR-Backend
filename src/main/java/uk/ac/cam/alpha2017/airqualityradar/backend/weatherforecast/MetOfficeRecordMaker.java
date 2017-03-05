@@ -21,7 +21,7 @@ import java.util.Calendar;
 
 public class MetOfficeRecordMaker {
     private int toNearestMeasure(int requestMin){
-        //round requested time to nearest measurement
+        // round requested time to nearest measurement
         int firstMeasure = 180;
         int lastMeasure = 1260;
 
