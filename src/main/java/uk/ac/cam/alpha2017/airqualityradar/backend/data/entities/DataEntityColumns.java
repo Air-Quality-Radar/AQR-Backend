@@ -5,6 +5,7 @@ package uk.ac.cam.alpha2017.airqualityradar.backend.data.entities;
  */
 public interface DataEntityColumns {
     String ROW_KEY = "RowKey";
+    String PARTITION_KEY = "PartitionKey";
 
     /**
      * The year, formatted as a 4-digit number
