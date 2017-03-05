@@ -54,13 +54,13 @@ public class HistoricalDataProvider {
         Collections.sort(airDataResultList);
         Collections.sort(weatherDataResultList);
         Iterator<AirDataEntity> airDataEntityIterator = airDataResultList.iterator();
-        if (weatherDataResultList.size() == 0) {
-            weatherDataResultList.add(null);
-        }
         Iterator<WeatherDataEntity> weatherDataEntityIterator = weatherDataResultList.iterator();
 
         // Setup
-        WeatherDataEntity currentWeatherEntity = weatherDataEntityIterator.next();
+        WeatherDataEntity currentWeatherEntity = null;
+        if (weatherDataEntityIterator.hasNext()) {
+            currentWeatherEntity =  weatherDataEntityIterator.next();
+        }
         AirDataEntity currentAirDataEntity;
         ArrayList<DataPoint> dataPoints = new ArrayList<>(airDataResultList.size());
 
