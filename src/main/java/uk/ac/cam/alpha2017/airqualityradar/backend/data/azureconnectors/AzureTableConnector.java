@@ -56,6 +56,20 @@ public class AzureTableConnector {
                 TableQuery.Operators.AND,
                 toDateCondition);
 
+        // Adding a condition on the PartitionKey index when we can gives a huge performance boost
+        if (fromDate.get(Calendar.YEAR) == toDate.get(Calendar.YEAR)) {
+            String yearCondition = TableQuery.generateFilterCondition(
+                    AirDataEntityColumns.PARTITION_KEY,
+                    TableQuery.QueryComparisons.EQUAL,
+                    Integer.toString(fromDate.get(Calendar.YEAR))
+            );
+            filterCondition = TableQuery.combineFilters(
+                    yearCondition,
+                    TableQuery.Operators.AND,
+                    filterCondition
+            );
+        }
+
         TableQuery<entityClass> query =
                 TableQuery.from(classToMapByReflection)
                           .where(filterCondition);
