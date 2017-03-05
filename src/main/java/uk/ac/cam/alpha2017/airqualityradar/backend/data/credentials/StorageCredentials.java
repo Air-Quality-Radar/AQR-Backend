@@ -1,14 +1,9 @@
 package uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.File;
-import java.io.IOException;
-
 public class StorageCredentials {
-    public StorageConnectionInfo getConnectionInfo() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+    private static final String ReplaceFileMessage = "This file should be replaced with a file that generates the actual credentials.";
 
-        return mapper.readValue(new File("deploy/storage_connection.json"), StorageConnectionInfo.class);
+    public StorageConnectionInfo getConnectionInfo() {
+        throw new UnsupportedOperationException(ReplaceFileMessage);
     }
 }
