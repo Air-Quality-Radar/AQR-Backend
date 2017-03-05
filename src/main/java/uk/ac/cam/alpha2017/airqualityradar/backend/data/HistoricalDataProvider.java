@@ -39,10 +39,6 @@ public class HistoricalDataProvider {
         connector.getEntitiesBetweenCalendars(HISTORICAL_AIR_DATA_TABLE_NAME, fromCalendar, toCalendar, AirDataEntity.class).forEachRemaining(airDataResultList::add);
         connector.getEntitiesBetweenCalendars(HISTORICAL_WEATHER_DATA_TABLE_NAME, fromCalendar, toCalendar, WeatherDataEntity.class).forEachRemaining(weatherDataResultList::add);
 
-        // Will error if no weatherDataResults retrieved but I think that's appropriate (otherwise mapDataPoints would error)
-        if (weatherDataResultList.size() == 0) {
-            throw new IllegalStateException("Weather data is empty");
-        }
         return mapDataPoints(weatherDataResultList, airDataResultList);
     }
 
@@ -58,6 +54,9 @@ public class HistoricalDataProvider {
         Collections.sort(airDataResultList);
         Collections.sort(weatherDataResultList);
         Iterator<AirDataEntity> airDataEntityIterator = airDataResultList.iterator();
+        if (weatherDataResultList.size() == 0) {
+            weatherDataResultList.add(null);
+        }
         Iterator<WeatherDataEntity> weatherDataEntityIterator = weatherDataResultList.iterator();
 
         // Setup
@@ -82,6 +81,7 @@ public class HistoricalDataProvider {
             }
             dataPoints.add(dataPointConverter.convertAirAndWeatherToDataPoint(currentAirDataEntity, currentWeatherEntity));
         }
+
         return dataPoints;
     }
 }
