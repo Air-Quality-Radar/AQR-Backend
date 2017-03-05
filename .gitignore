@@ -3,4 +3,3 @@
 .idea/libraries/*
 target/*
 out/*
-deploy/storage_connection.json
