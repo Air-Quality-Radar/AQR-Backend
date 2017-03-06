@@ -1,6 +1,5 @@
 package uk.ac.cam.alpha2017.airqualityradar.backend.data.entities;
 
-import com.microsoft.azure.storage.table.StoreAs;
 import com.microsoft.azure.storage.table.TableServiceEntity;
 
 /**
@@ -9,102 +8,63 @@ import com.microsoft.azure.storage.table.TableServiceEntity;
 public class AirDataEntity extends TableServiceEntity implements Comparable {
 
     private String searchTimestamp;
-    private String year;
-    private String daysSinceStartOfYear;
-    private String minutesPastMidnight;
+    private Integer year;
+    private Integer daysSinceStartOfYear;
+    private Integer minutesPastMidnight;
     private Long latitude;
     private Long longitude;
-    private String NOx;
-    private String PM10;
-    private String PM25;
+    private Double NOx;
+    private Double PM10;
+    private Double PM25;
 
-    @StoreAs(name = AirDataEntityColumns.SEARCH_TIMESTAMP)
-    public void setSearchTimestamp(String searchTimestamp) {
+    public AirDataEntity() {}
+
+    public AirDataEntity(String partitionKey, String rowKey, String searchTimestamp, Integer year, Integer daysSinceStartOfYear, Integer minutesPastMidnight, Long latitude, Long longitude, Double NOx, Double PM10, Double PM25) {
+        super(partitionKey, rowKey);
         this.searchTimestamp = searchTimestamp;
-    }
-
-    @StoreAs(name = AirDataEntityColumns.YEAR)
-    public void setYear(String year) {
         this.year = year;
-    }
-
-    @StoreAs(name = AirDataEntityColumns.DAYS)
-    public void setDaysSinceStartOfYear(String daysSinceStartOfYear) {
         this.daysSinceStartOfYear = daysSinceStartOfYear;
-    }
-
-    @StoreAs(name = AirDataEntityColumns.MINUTES)
-    public void setMinutesPastMidnight(String minutesPastMidnight) {
         this.minutesPastMidnight = minutesPastMidnight;
-    }
-
-    @StoreAs(name = AirDataEntityColumns.LATITUDE)
-    public void setLatitude(Long latitude) {
         this.latitude = latitude;
-    }
-
-    @StoreAs(name = AirDataEntityColumns.LONGITUDE)
-    public void setLongitude(Long Longitude) {
-        this.longitude = Longitude;
-    }
-
-    @StoreAs(name = AirDataEntityColumns.NOX)
-    public void setNOx(String NOx) {
+        this.longitude = longitude;
         this.NOx = NOx;
-    }
-
-    @StoreAs(name = AirDataEntityColumns.PM10)
-    public void setPM10(String PM10) {
         this.PM10 = PM10;
-    }
-
-    @StoreAs(name = AirDataEntityColumns.PM25)
-    public void setPM25(String PM25) {
         this.PM25 = PM25;
     }
 
-    @StoreAs(name = AirDataEntityColumns.SEARCH_TIMESTAMP)
     public String getSearchTimestamp() {
         return searchTimestamp;
     }
 
-    @StoreAs(name = AirDataEntityColumns.YEAR)
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    @StoreAs(name = AirDataEntityColumns.DAYS)
-    public String getDaysSinceStartOfYear() {
+    public Integer getDaysSinceStartOfYear() {
         return daysSinceStartOfYear;
     }
 
-    @StoreAs(name = AirDataEntityColumns.MINUTES)
-    public String getMinutesPastMidnight() {
+    public Integer getMinutesPastMidnight() {
         return minutesPastMidnight;
     }
 
-    @StoreAs(name = AirDataEntityColumns.LATITUDE)
     public Long getLatitude() {
         return latitude;
     }
 
-    @StoreAs(name = AirDataEntityColumns.LONGITUDE)
     public Long getLongitude() {
         return longitude;
     }
 
-    @StoreAs(name = AirDataEntityColumns.NOX)
-    public String getNOx() {
+    public Double getNOx() {
         return NOx;
     }
 
-    @StoreAs(name = AirDataEntityColumns.PM10)
-    public String getPM10() {
+    public Double getPM10() {
         return PM10;
     }
 
-    @StoreAs(name = AirDataEntityColumns.PM25)
-    public String getPM25() {
+    public Double getPM25() {
         return PM25;
     }
 
