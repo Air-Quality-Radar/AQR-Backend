@@ -17,9 +17,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Created by henry on 06/03/2017.
- */
 public class RadarDataServiceTest {
     private Calendar cal;
     private HistoricalDataProvider hisProvider;
@@ -27,7 +24,7 @@ public class RadarDataServiceTest {
     private StorageConnectionInfo info;
 
     @Before
-    public void setup(){
+    public void setup() {
         StorageCredentials credentials = new StorageCredentials();
         info = credentials.getConnectionInfo();
 
@@ -41,14 +38,20 @@ public class RadarDataServiceTest {
     }
 
     @Test
-    public void testCalendarRange(){
-        RadarDataService service = new RadarDataService(hisProvider,preProvider);
+    public void testCalendarRange() {
+        RadarDataService service = new RadarDataService(hisProvider, preProvider);
         List<DataPoint> dataPoints = service.getDataPoints(cal);
 
         DataPoint first = dataPoints.get(0);
         DataPoint last = dataPoints.get(dataPoints.size() - 1);
 
-        assertEquals(first.getCalendar().get(Calendar.DATE),last.getCalendar().get(Calendar.DATE) - 7);
+        assertEquals(first.getCalendar().get(Calendar.DATE), last.getCalendar().get(Calendar.DATE) - 7);
+    }
+
+    @Test
+    public void testCalendarsOrdered() {
+        RadarDataService service = new RadarDataService(hisProvider, preProvider);
+        List<DataPoint> dataPoints = service.getDataPoints(cal);
 
         Iterator<DataPoint> iterator = dataPoints.iterator();
         DataPoint previous = iterator.next();
@@ -63,20 +66,21 @@ public class RadarDataServiceTest {
         }
     }
 
+
     @Test
-    public void testInvalidKey(){
+    public void testInvalidKey() {
         info.setAccountKey("invalidkey");
 
-        RadarDataService service = new RadarDataService(hisProvider,preProvider);
+        RadarDataService service = new RadarDataService(hisProvider, preProvider);
 
         assertThrows(RuntimeException.class, () -> service.getDataPoints(cal));
     }
 
     @Test
-    public void testInvalidAccount(){
+    public void testInvalidAccount() {
         info.setAccountName("invalidaccountname");
 
-        RadarDataService service = new RadarDataService(hisProvider,preProvider);
+        RadarDataService service = new RadarDataService(hisProvider, preProvider);
 
         assertThrows(RuntimeException.class, () -> service.getDataPoints(cal));
     }
