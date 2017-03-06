@@ -7,12 +7,14 @@ public class DataPoint {
     private Location location;
     private AirDataPoint air;
     private WeatherDataPoint weather;
+    private boolean isPredicted;
 
-    public DataPoint(Calendar calendar, Location location, AirDataPoint air, WeatherDataPoint weather) {
+    public DataPoint(Calendar calendar, Location location, AirDataPoint air, WeatherDataPoint weather, boolean isPredicted) {
         this.calendar = calendar;
         this.location = location;
         this.air = air;
         this.weather = weather;
+        this.isPredicted = isPredicted;
     }
 
     public Calendar getCalendar() {
@@ -29,5 +31,9 @@ public class DataPoint {
 
     public WeatherDataPoint getWeather() {
         return weather;
+    }
+
+    public boolean isPredicted() {
+        return isPredicted;
     }
 }

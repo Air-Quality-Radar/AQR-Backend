@@ -92,7 +92,7 @@ public class MockRadarDataService implements DataService {
                 PM25Measurement pm25 = new PM25Measurement(ThreadLocalRandom.current().nextDouble(50, 600));
                 AirDataPoint airDataPoint = new AirDataPoint(nox, pm10, pm25);
 
-                dataPoints.add(new DataPoint(sampleCalendar, sampleLocation, airDataPoint, weatherDataPoint));
+                dataPoints.add(new DataPoint(sampleCalendar, sampleLocation, airDataPoint, weatherDataPoint, false));
             }
         }
 

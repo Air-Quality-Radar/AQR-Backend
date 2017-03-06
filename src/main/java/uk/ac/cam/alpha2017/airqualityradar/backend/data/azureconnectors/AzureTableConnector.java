@@ -4,11 +4,14 @@ import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.CloudTableClient;
+import com.microsoft.azure.storage.table.EntityResolver;
 import com.microsoft.azure.storage.table.TableQuery;
 import com.microsoft.azure.storage.table.TableServiceEntity;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageConnectionInfo;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.dataconverters.CalendarConverter;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.AirDataEntity;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.AirDataEntityColumns;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.entities.AirDataEntityResolver;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -74,7 +77,13 @@ public class AzureTableConnector {
                 TableQuery.from(classToMapByReflection)
                           .where(filterCondition);
 
-        Iterable<entityClass> entityIterable = cloudTable.execute(query);
+        Iterable<entityClass> entityIterable;
+
+        if (classToMapByReflection == AirDataEntity.class) {
+            entityIterable = cloudTable.execute(query, (EntityResolver<entityClass>) new AirDataEntityResolver());
+        } else {
+            entityIterable = cloudTable.execute(query);
+        }
 
         return entityIterable.iterator();
     }
