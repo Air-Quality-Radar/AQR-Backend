@@ -19,4 +19,9 @@ public class HistoricalDataProvider extends AbstractDataProvider {
     String getWeatherDataTableName() {
         return "weather";
     }
+
+    @Override
+    boolean isPredicted() {
+        return false;
+    }
 }

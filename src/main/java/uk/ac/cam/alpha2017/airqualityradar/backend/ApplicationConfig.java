@@ -3,6 +3,7 @@ package uk.ac.cam.alpha2017.airqualityradar.backend;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.HistoricalDataProvider;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.PredictionsDataProvider;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.azureconnectors.AzureTableConnector;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageConnectionInfo;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageCredentials;
@@ -22,12 +23,17 @@ public class ApplicationConfig {
 
     @Bean
     public DataService dataService() {
-        return new RadarDataService(historicalDataProvider());
+        return new RadarDataService(historicalDataProvider(), predictionsDataProvider());
     }
 
     @Bean
     public HistoricalDataProvider historicalDataProvider() {
         return new HistoricalDataProvider(azureTableConnector(), dataPointConverter());
+    }
+
+    @Bean
+    public PredictionsDataProvider predictionsDataProvider() {
+        return new PredictionsDataProvider(azureTableConnector(), dataPointConverter());
     }
 
     @Bean

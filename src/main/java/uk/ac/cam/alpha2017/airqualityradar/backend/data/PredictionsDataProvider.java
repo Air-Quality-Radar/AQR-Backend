@@ -10,12 +10,16 @@ public class PredictionsDataProvider extends AbstractDataProvider {
 
     @Override
     String getAirDataTableName() {
-        return "predictions";
+        return "prediction";
     }
 
     @Override
     String getWeatherDataTableName() {
-        //TODO: Add weather table name
-        return null;
+        return "forecast";
+    }
+
+    @Override
+    boolean isPredicted() {
+        return true;
     }
 }

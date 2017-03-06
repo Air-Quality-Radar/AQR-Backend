@@ -12,12 +12,9 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.*;
 
-/**
- * Created by jirka on 5.3.17.
- */
 public abstract class AbstractDataProvider {
-    protected final AzureTableConnector connector;
-    protected final DataPointConverter dataPointConverter;
+    private final AzureTableConnector connector;
+    private final DataPointConverter dataPointConverter;
 
     public AbstractDataProvider(AzureTableConnector connector, DataPointConverter dataPointConverter) {
         this.connector = connector;
@@ -25,12 +22,12 @@ public abstract class AbstractDataProvider {
     }
 
     /**
-     * Gets a historical data points from the collection of historical data on Azure for
+     * Gets data points from the specified collections of historical and weather data on Azure for
      * each of the specified date/times, at each of the specified locations
      *
      * @param fromCalendar The date and time to start return data points from
      * @param toCalendar   The date and time that we will not return data points after
-     * @return The data points from the historical data per calendar per location
+     * @return The data points from the data per calendar per location
      */
     public List<DataPoint> getDataPoints(Calendar fromCalendar, Calendar toCalendar) throws StorageException, InvalidKeyException, URISyntaxException, TableDoesNotExistException {
         ArrayList<AirDataEntity> airDataResultList = new ArrayList<>();
@@ -44,11 +41,11 @@ public abstract class AbstractDataProvider {
     }
 
     /**
-     * Maps historical air quality data with historical weather data (both retrieved from Azure)
+     * Maps air quality data and weather data (both retrieved from Azure) to DataPoints
      *
-     * @param weatherDataResultList A list of historical weather data retrived from Azure. ArrayList required for fast sorting.
-     * @param airDataResultList     A list of historical air quality data retrived from Azure. ArrayList required for fast sorting.
-     * @return The data points including both weather and air quality from the historical data per calendar per location
+     * @param weatherDataResultList A list of weather data retrieved from Azure. ArrayList required for fast sorting.
+     * @param airDataResultList     A list of air quality data retrieved from Azure. ArrayList required for fast sorting.
+     * @return The data points including both weather and air quality from the data per calendar per location
      */
     private ArrayList<DataPoint> mapDataPoints(List<WeatherDataEntity> weatherDataResultList, List<AirDataEntity> airDataResultList) {
         // Sort lists & convert to iterables
@@ -80,7 +77,7 @@ public abstract class AbstractDataProvider {
                     }
                 }
             }
-            dataPoints.add(dataPointConverter.convertAirAndWeatherToDataPoint(currentAirDataEntity, currentWeatherEntity));
+            dataPoints.add(dataPointConverter.convertAirAndWeatherToDataPoint(currentAirDataEntity, currentWeatherEntity, isPredicted()));
         }
 
         return dataPoints;
@@ -88,5 +85,6 @@ public abstract class AbstractDataProvider {
 
     abstract String getAirDataTableName();
     abstract String getWeatherDataTableName();
+    abstract boolean isPredicted();
 
 }
