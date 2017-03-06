@@ -6,12 +6,6 @@ import org.w3c.dom.NodeList;
 import javax.xml.bind.DatatypeConverter;
 import java.util.Calendar;
 
-/**
- * Finds the element that corresponds to a given date out of a list of given elements
- *
- * Created by henry on 20.2.17.
- */
-
 public class MetOfficeElementFinder {
 
     private boolean sameDay(Calendar date1, Calendar date2){

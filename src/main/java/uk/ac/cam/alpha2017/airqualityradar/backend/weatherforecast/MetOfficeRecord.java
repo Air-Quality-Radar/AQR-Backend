@@ -2,11 +2,6 @@ package uk.ac.cam.alpha2017.airqualityradar.backend.weatherforecast;
 
 import java.util.Calendar;
 
-/**
- * Weather record object
- *
- * Created by henry on 13/02/2017.
- */
 public class MetOfficeRecord {
     private Calendar calendar;
     private int sigWeatherCode;

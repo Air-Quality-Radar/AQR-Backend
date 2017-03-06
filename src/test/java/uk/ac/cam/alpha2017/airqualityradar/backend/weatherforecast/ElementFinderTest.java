@@ -16,12 +16,6 @@ import java.util.Calendar;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Tests the functionality of MetOfficeElementFinder
- *
- * Created by henry on 20.2.17.
- */
-
 public class ElementFinderTest {
     private MetOfficeElementFinder testFinder;
     private File testFile;

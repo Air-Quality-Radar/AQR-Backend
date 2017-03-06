@@ -13,12 +13,6 @@ import java.io.*;
 import java.net.URL;
 import java.util.Calendar;
 
-/**
- * Creates a weather record object corresponding to a given date/time and location code
- *
- * Created by henry on 13.2.17.
- */
-
 public class MetOfficeRecordMaker {
     private int toNearestMeasure(int requestMin){
         // round requested time to nearest measurement

@@ -12,12 +12,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Tests the functionality of MetOfficeRecordTest
- *
- * Created by henry on 14.2.17.
- */
-
 public class RecordMakerTest {
 
     public static List<Map.Entry<Integer, Integer>> times(){
