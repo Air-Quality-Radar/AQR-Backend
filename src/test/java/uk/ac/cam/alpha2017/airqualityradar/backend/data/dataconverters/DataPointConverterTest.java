@@ -21,18 +21,11 @@ public class DataPointConverterTest {
     @BeforeEach
     public void setup(){
         converter = new DataPointConverter();
-        airEntity = new AirDataEntity();
+        airEntity = new AirDataEntity("", "", "2017-04-09T06:04:08Z", 2017, 129, 364, 5L, 2L, 20.0, 30.0, 40.0);
         weatherEntity = new WeatherDataEntity();
-        airEntity.setSearchTimestamp("2017-04-09T06:04:08Z");
         weatherEntity.setSearchTimestamp("2017-04-09T06:04:08Z");
-        airEntity.setLatitude(5L);
-        airEntity.setLongitude(2L);
         weatherEntity.setLongitude(5L);
         weatherEntity.setLongitude(2L);
-
-        airEntity.setNOx("20");
-        airEntity.setPM10("30");
-        airEntity.setPM25("40");
 
         weatherEntity.setTemperature("5");
         weatherEntity.setHumidity("90");
@@ -45,7 +38,7 @@ public class DataPointConverterTest {
 
     @Test
     public void testAirToData(){
-        DataPoint dataPoint = converter.convertAirAndWeatherToDataPoint(airEntity,weatherEntity);
+        DataPoint dataPoint = converter.convertAirAndWeatherToDataPoint(airEntity,weatherEntity,false);
         AirDataPoint airPoint = dataPoint.getAir();
 
         assertEquals(airPoint.getNox().getValue(),20);
@@ -56,10 +49,9 @@ public class DataPointConverterTest {
 
     @Test
     public void testAirEmptyValue(){
-        airEntity.setNOx("");
-        airEntity.setPM10("");
-        airEntity.setPM25("");
-        DataPoint dataPoint = converter.convertAirAndWeatherToDataPoint(airEntity,weatherEntity);
+        airEntity = new AirDataEntity("","","2017-04-09T06:04:08Z",2017,129,364,5L,2L,null,null,null);
+
+        DataPoint dataPoint = converter.convertAirAndWeatherToDataPoint(airEntity,weatherEntity,false);
         AirDataPoint airPoint = dataPoint.getAir();
 
         assertEquals(airPoint.getNox(),null);
@@ -70,7 +62,7 @@ public class DataPointConverterTest {
 
     @Test
     public void testWeatherToData(){
-        DataPoint dataPoint = converter.convertAirAndWeatherToDataPoint(airEntity,weatherEntity);
+        DataPoint dataPoint = converter.convertAirAndWeatherToDataPoint(airEntity,weatherEntity,false);
         WeatherDataPoint weatherPoint =  dataPoint.getWeather();
 
         assertEquals(weatherPoint.getTemperature().getValue(),5);
@@ -90,7 +82,7 @@ public class DataPointConverterTest {
         weatherEntity.setWindSpeed("");
         weatherEntity.setPressure("");
         weatherEntity.setRainfallInPastHour("");
-        DataPoint dataPoint = converter.convertAirAndWeatherToDataPoint(airEntity,weatherEntity);
+        DataPoint dataPoint = converter.convertAirAndWeatherToDataPoint(airEntity,weatherEntity,false);
         WeatherDataPoint weatherPoint =  dataPoint.getWeather();
 
         assertEquals(weatherPoint.getTemperature(),null);

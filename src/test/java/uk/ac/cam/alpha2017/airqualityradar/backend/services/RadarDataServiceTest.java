@@ -3,6 +3,7 @@ package uk.ac.cam.alpha2017.airqualityradar.backend.services;
 import org.junit.Before;
 import org.junit.Test;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.HistoricalDataProvider;
+import uk.ac.cam.alpha2017.airqualityradar.backend.data.PredictionsDataProvider;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.azureconnectors.AzureTableConnector;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageConnectionInfo;
 import uk.ac.cam.alpha2017.airqualityradar.backend.data.credentials.StorageCredentials;
@@ -21,7 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class RadarDataServiceTest {
     private Calendar cal;
-    private HistoricalDataProvider provider;
+    private HistoricalDataProvider hisProvider;
+    private PredictionsDataProvider preProvider;
     private StorageConnectionInfo info;
 
     @Before
@@ -32,20 +34,21 @@ public class RadarDataServiceTest {
         AzureTableConnector azure = new AzureTableConnector(info);
         DataPointConverter converter = new DataPointConverter();
 
-        provider = new HistoricalDataProvider(azure, converter);
+        hisProvider = new HistoricalDataProvider(azure, converter);
+        preProvider = new PredictionsDataProvider(azure, converter);
         cal = Calendar.getInstance();
 
     }
 
     @Test
     public void testCalendarRange(){
-        RadarDataService service = new RadarDataService(provider);
+        RadarDataService service = new RadarDataService(hisProvider,preProvider);
         List<DataPoint> dataPoints = service.getDataPoints(cal);
 
         DataPoint first = dataPoints.get(0);
         DataPoint last = dataPoints.get(dataPoints.size() - 1);
 
-        assertEquals(first.getCalendar().get(Calendar.DATE),last.getCalendar().get(Calendar.DATE) - 3);
+        assertEquals(first.getCalendar().get(Calendar.DATE),last.getCalendar().get(Calendar.DATE) - 7);
 
         Iterator<DataPoint> iterator = dataPoints.iterator();
         DataPoint previous = iterator.next();
@@ -64,7 +67,7 @@ public class RadarDataServiceTest {
     public void testInvalidKey(){
         info.setAccountKey("invalidkey");
 
-        RadarDataService service = new RadarDataService(provider);
+        RadarDataService service = new RadarDataService(hisProvider,preProvider);
 
         assertThrows(RuntimeException.class, () -> service.getDataPoints(cal));
     }
@@ -73,7 +76,7 @@ public class RadarDataServiceTest {
     public void testInvalidAccount(){
         info.setAccountName("invalidaccountname");
 
-        RadarDataService service = new RadarDataService(provider);
+        RadarDataService service = new RadarDataService(hisProvider,preProvider);
 
         assertThrows(RuntimeException.class, () -> service.getDataPoints(cal));
     }
